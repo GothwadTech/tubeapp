@@ -79,12 +79,12 @@ jobs:
       - name: Run unit tests
         run: >
           ./gradlew :app:testGithubDebugUnitTest :app:testFossDebugUnitTest
-          --max-workers=2 --build-cache --stacktrace
+          --max-workers=1 --build-cache --stacktrace
 
       - name: Compile instrumentation tests
         run: >
           ./gradlew :app:compileGithubDebugAndroidTestKotlin
-          --max-workers=2 --build-cache --stacktrace
+          --max-workers=1 --build-cache --stacktrace
 
       # The single artifact this project ships: one universal release APK.
       # app/build.gradle.kts has ABI splits disabled, so this emits exactly one APK
@@ -92,7 +92,7 @@ jobs:
       - name: Build universal release APK
         run: >
           ./gradlew :app:assembleGithubRelease
-          --max-workers=2 --build-cache --stacktrace
+          --max-workers=1 --build-cache --stacktrace
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
