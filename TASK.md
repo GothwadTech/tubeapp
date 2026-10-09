@@ -210,14 +210,14 @@ Gothwad Tech copyright add karna, upstream ka credit preserve karte hue (GPLv3 r
 | Item | Detail |
 |---|---|
 | Jobs | `build`, `release` (tag only). Upstream ka `nightly` job **hata diya gaya**. |
-| Artifacts | **3** — `app-universal-release-apk` (githubRelease), `app-release-aab` (fossRelease, Play Store), `app-debug-apk` (githubDebug) |
+| Artifact | **Sirf 1** — universal release APK, naam **`GoTube-v1.0.<run>-Release.apk`** |
+| Versioning | `versionCode = GITHUB_RUN_NUMBER`, `versionName = "1.0.<run>"`. Dono `app/build.gradle.kts` ke `androidComponents { onVariants(selector().withBuildType("release")) }` block se aate hain, isliye file name aur APK ke andar ki version kabhi diverge nahi kar sakti. Local builds me `GITHUB_RUN_NUMBER` unset hota hai → `defaultConfig` ki values rehti hain. |
 | ABI splits | **Disabled** in `app/build.gradle.kts`. Har variant = 1 universal APK. Pehle 4 ABI + universal = 5 per variant, 15 APKs per run, jisme se x86/x86_64 kabhi publish hi nahi hote the. |
-| Lint steps | **Hata diye** — `app/build.gradle.kts:197-200` me `lint { abortOnError = false }`, matlab lint kabhi build fail nahi karta tha, sirf ~15 min leta tha |
+| Hata diya gaya | AAB (`bundleFossRelease`), debug APK, nightly keystore/build/publish, per-ABI uploads, lint steps (`lint { abortOnError = false }` tha, kabhi fail nahi karta tha, sirf ~15 min leta tha) |
 | `--max-workers` | `1` → **`2`** (GitHub runner par 4 cores hain) |
-| **AAB flavor = `foss`** | Google Play self-updating apps reject karta hai. `github` flavor me `UPDATER_ENABLED = true` (`app/build.gradle.kts:82`), `foss` me `false` (line 87). Isliye Play bundle `foss` se banta hai. Rebrand ke waqt flavor naam reconsider karna. |
 | **`EXPECTED_SIGNER_SHA256`** | Abhi bhi **upstream Flow key** ka digest `4322294e…` hai. Apna keystore banane par **ye badalna zaroori hai** warna `Verify release signing certificate` fail karega. |
 | Required repo secrets | `RELEASE_KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`, `LASTFM_API_KEY`, `LASTFM_API_SECRET` (+ `GITHUB_TOKEN` auto). Nightly ke 4 secrets ab zaroori nahi. |
-| Release job | Tag (`v*`) par `gotube.apk` + `gotube.aab` + `checksums.txt` publish karta hai |
+| Release job | Tag (`v*`) par `GoTube-v1.0.<run>-Release.apk` + `checksums.txt` publish karta hai |
 
 ### Misc gotchas
 
@@ -438,8 +438,10 @@ grep -rn 'android:name="\.Flow' app/src/main/AndroidManifest.xml                
       ye **upstream A-EDev ka Discord app ID hai**. GoTube ke liye **apna Discord application
       banao ya feature disable karo**. ⚠️ **User se poochna** — iske bina Discord rich presence
       upstream ke app ke naam se dikhega.
-- [ ] Version reset consider karo: `versionCode = 18` / `versionName = "2.2.1"` — fork ke liye
-      `versionCode = 1`, `versionName = "1.0.0"` zyada sahi hai. ⚠️ **User se poochna.**
+- [ ] **Versioning already CI-driven hai** — `androidComponents { withBuildType("release") }` me
+      `versionCode = GITHUB_RUN_NUMBER` aur `versionName = "1.0.<run>"` set hota hai. Isliye
+      `defaultConfig` ke `versionCode = 18` / `versionName = "2.2.1"` sirf **local builds** ke liye
+      fallback hain. Rebrand ke waqt inhe `1` / `"1.0.0"` par reset kar sakte ho, CI par koi asar nahi.
 
 **Verify:**
 ```bash

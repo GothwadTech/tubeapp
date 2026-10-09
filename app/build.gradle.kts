@@ -232,6 +232,23 @@ androidComponents {
                 .orElse(BuildConfigField("int", "0", null)),
         )
     }
+
+    // CI releases are numbered by the workflow run. versionCode is the run number and
+    // versionName is "1.0.<run number>", so the two always agree on the final segment:
+    //   run  12 -> versionCode  12, versionName 1.0.12
+    //   run 136 -> versionCode 136, versionName 1.0.136
+    // The published APK is named GoTube-v<versionName>-Release.apk by the workflow.
+    // Local release builds keep defaultConfig's values because GITHUB_RUN_NUMBER is
+    // not set outside CI.
+    onVariants(selector().withBuildType("release")) { variant ->
+        val run = providers.environmentVariable("GITHUB_RUN_NUMBER").map(String::toInt)
+        variant.outputs.forEach { output ->
+            val localCode = output.versionCode.get()
+            val localName = output.versionName.get()
+            output.versionCode.set(run.orElse(localCode))
+            output.versionName.set(run.map { "1.0.$it" }.orElse(localName))
+        }
+    }
 }
 
 room {
