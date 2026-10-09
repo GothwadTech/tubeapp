@@ -19,12 +19,17 @@ permissions:
   contents: read
 
 env:
-  # Certificate of the release signing key. Once you generate your own keystore,
-  # replace this with its SHA-256 digest:
+  # SHA-256 of the release signing certificate this repository builds with.
+  # CI measured it off the signed APK on 2026-10-09:
+  #   "app-github-release.apk is signed with '731c73b1…', expected '4322294e…'"
+  # where 4322294e… was the UPSTREAM Flow key still pinned here. Android refuses
+  # to install an update signed by a different key, so this value is what every
+  # installed client is pinned to - do not rotate the keystore without a
+  # migration plan for existing users.
+  #
+  # To re-read it from a keystore:
   #   keytool -list -v -keystore release.keystore | grep SHA256
-  # The value below is the UPSTREAM Flow key and will not match a new keystore,
-  # so "Verify release signing" will fail a signed build until you update it.
-  EXPECTED_SIGNER_SHA256: 4322294ed4caa2d4294140095818080ffe8acc1fbe3cdc76107df45c5286be40
+  EXPECTED_SIGNER_SHA256: 731c73b1908f9fd4685f3330952d9afe71577493a0ea1de6b8a4f45e8c2ff303
 
 jobs:
   build:

@@ -215,9 +215,31 @@ Gothwad Tech copyright add karna, upstream ka credit preserve karte hue (GPLv3 r
 | ABI splits | **Disabled** in `app/build.gradle.kts`. Har variant = 1 universal APK. Pehle 4 ABI + universal = 5 per variant, 15 APKs per run, jisme se x86/x86_64 kabhi publish hi nahi hote the. |
 | Hata diya gaya | AAB (`bundleFossRelease`), debug APK, nightly keystore/build/publish, per-ABI uploads, lint steps (`lint { abortOnError = false }` tha, kabhi fail nahi karta tha, sirf ~15 min leta tha) |
 | `--max-workers` | `1` → **`2`** (GitHub runner par 4 cores hain) |
-| **`EXPECTED_SIGNER_SHA256`** | Abhi bhi **upstream Flow key** ka digest `4322294e…` hai. Apna keystore banane par **ye badalna zaroori hai** warna `Verify release signing certificate` fail karega. |
+| **`EXPECTED_SIGNER_SHA256`** | **`731c73b1908f9fd4685f3330952d9afe71577493a0ea1de6b8a4f45e8c2ff303`** — ye is repo ke apne keystore ka digest hai, CI ne 2026-10-09 ko signed APK se measure kiya. Upstream Flow ka `4322294e…` ab use nahi hota. ⚠️ Ye key rotate mat karna — Android dusri key se signed update install nahi karta. |
 | Required repo secrets | `RELEASE_KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`, `LASTFM_API_KEY`, `LASTFM_API_SECRET` (+ `GITHUB_TOKEN` auto). Nightly ke 4 secrets ab zaroori nahi. |
 | Release job | Tag (`v*`) par `GoTube-v1.0.<run>-Release.apk` + `checksums.txt` publish karta hai |
+
+**Measured CI timings** (GitHub-hosted `ubuntu-latest`, run 37918549634):
+
+| Step | Time |
+|---|---|
+| Check Kotlin formatting (`spotlessCheck`) | 1m17s |
+| Run unit tests (2 flavors) | 14m35s |
+| Compile instrumentation tests | 5s (build cache) |
+| **Build universal release APK (1 APK)** | **14m56s** |
+| **Total** | **~31 min** |
+
+Baseline comparison — upstream config, run 37904688418:
+
+| Step | Time |
+|---|---|
+| Lint GitHub nightly | 13m01s *(ab hata diya, `abortOnError = false` tha)* |
+| **Build CI APKs (15 APKs)** | **59m44s aur tab bhi khatam nahi hua** *(cancel hua)* |
+
+**`--max-workers` par ek measured finding:** `2` par unit tests **fail** hote hain
+(`Run unit tests 09:52:58 -> 10:00:40, 7m42s, failure`, annotation `Process completed with exit
+code 1`), `1` par pass (`13m40s, success`). 16 GB runner par do Kotlin/Gradle workers +
+Robolectric ki memory pressure lagti hai. **`--max-workers=1` hi rakhna.**
 
 ### Misc gotchas
 
