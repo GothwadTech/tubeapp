@@ -1,0 +1,216 @@
+name: Android CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+# Collapse superseded runs on branches and PRs. Tag runs publish the release
+# artifact and must never be cancelled by a subsequent push.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+
+permissions:
+  contents: read
+
+env:
+  # SHA-256 of the release signing certificate this repository builds with.
+  # CI measured it off the signed APK on 2026-10-09:
+  #   "app-github-release.apk is signed with '731c73b1…', expected '4322294e…'"
+  # where 4322294e… was the UPSTREAM Flow key still pinned here. Android refuses
+  # to install an update signed by a different key, so this value is what every
+  # installed client is pinned to - do not rotate the keystore without a
+  # migration plan for existing users.
+  #
+  # To re-read it from a keystore:
+  #   keytool -list -v -keystore release.keystore | grep SHA256
+  EXPECTED_SIGNER_SHA256: 731c73b1908f9fd4685f3330952d9afe71577493a0ea1de6b8a4f45e8c2ff303
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Check Kotlin formatting
+        run: >
+          ./gradlew spotlessCheck
+          --build-cache --stacktrace
+
+      - name: Decode keystore
+        id: keystore
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$RELEASE_KEYSTORE_BASE64" ]; then
+            echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > release.keystore
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+            echo "Release keystore decoded."
+          elif [ "${GITHUB_REF#refs/tags/v}" != "$GITHUB_REF" ]; then
+            # A tag build publishes to GitHub Releases. Without the keystore,
+            # app/build.gradle.kts falls back to signingConfig = null and produces
+            # an UNSIGNED APK, which cannot be installed.
+            echo "::error::RELEASE_KEYSTORE_BASE64 is unavailable for a tag build. Refusing to publish an unsigned APK."
+            exit 1
+          else
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            echo "Release keystore secret is not available. Continuing with an unsigned CI build."
+          fi
+
+      - name: Run unit tests
+        run: >
+          ./gradlew :app:testGithubDebugUnitTest :app:testFossDebugUnitTest
+          --max-workers=1 --build-cache --stacktrace
+
+      - name: Compile instrumentation tests
+        run: >
+          ./gradlew :app:compileGithubDebugAndroidTestKotlin
+          --max-workers=1 --build-cache --stacktrace
+
+      # The single artifact this project ships: one universal release APK.
+      # app/build.gradle.kts has ABI splits disabled, so this emits exactly one APK
+      # containing every ABI's native libraries.
+      - name: Build universal release APK
+        run: >
+          ./gradlew :app:assembleGithubRelease
+          --max-workers=1 --build-cache --stacktrace
+        env:
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_API_SECRET: ${{ secrets.LASTFM_API_SECRET }}
+
+      # Guards the update path: a wrong or missing key here is unrecoverable for
+      # installed users, so fail the build rather than publish. Skipped when no
+      # keystore was available, e.g. on fork PRs.
+      - name: Verify release signing certificate
+        if: ${{ steps.keystore.outputs.signed == 'true' }}
+        run: |
+          set -uo pipefail
+          apksigner=$(find "$ANDROID_SDK_ROOT/build-tools" -name apksigner -type f | sort -V | tail -1)
+          if [ -z "$apksigner" ]; then
+            echo "::error::apksigner was not found in the runner Android SDK."
+            exit 1
+          fi
+
+          shopt -s nullglob
+          apks=(app/build/outputs/apk/github/release/*.apk)
+          if (( ${#apks[@]} != 1 )); then
+            echo "::error::Expected exactly 1 APK in apk/github/release/, found ${#apks[@]}"
+            exit 1
+          fi
+
+          actual=$("$apksigner" verify --print-certs "${apks[0]}" | grep -m1 'certificate SHA-256 digest' | awk '{print $NF}')
+          if [ "$actual" != "$EXPECTED_SIGNER_SHA256" ]; then
+            echo "::error::$(basename "${apks[0]}") is signed with '$actual', expected '$EXPECTED_SIGNER_SHA256'"
+            exit 1
+          fi
+          echo "OK $(basename "${apks[0]}") -> $actual"
+
+      # versionCode and versionName both come from GITHUB_RUN_NUMBER, set in
+      # app/build.gradle.kts (androidComponents -> withBuildType("release")):
+      #   versionCode = run number
+      #   versionName = 1.0.<run number>
+      # so the file name below can never drift from what is baked into the APK.
+      - name: Name and stage the APK
+        id: apk
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          apks=(app/build/outputs/apk/github/release/*.apk)
+          if (( ${#apks[@]} != 1 )); then
+            echo "::error::Expected exactly 1 APK in apk/github/release/, found ${#apks[@]}"
+            exit 1
+          fi
+
+          name="GoTube-v1.0.${GITHUB_RUN_NUMBER}-Release.apk"
+          mkdir -p dist
+          cp "${apks[0]}" "dist/$name"
+          (cd dist && sha256sum "$name" > checksums.txt && cat checksums.txt)
+
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "Built $name from $(basename "${apks[0]}")"
+
+          bytes=$(stat --format='%s' "dist/$name")
+          {
+            echo '## Build artifact'
+            echo
+            echo '| APK | versionCode | versionName | Size |'
+            echo '|---|---:|---:|---:|'
+            printf '| `%s` | %s | 1.0.%s | %.2f MiB |\n' \
+              "$name" "$GITHUB_RUN_NUMBER" "$GITHUB_RUN_NUMBER" \
+              "$(awk -v b="$bytes" 'BEGIN { printf "%.2f", b / 1048576 }')"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload universal release APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.apk.outputs.name }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Download release APK
+        uses: actions/download-artifact@v8
+        with:
+          pattern: GoTube-v*-Release.apk
+          path: dist/
+          merge-multiple: true
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          name: GoTube ${{ steps.get_version.outputs.VERSION }}
+          body_path: release-notes.md
+          generate_release_notes: false
+          files: |
+            dist/GoTube-v*-Release.apk
+            dist/checksums.txt
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
