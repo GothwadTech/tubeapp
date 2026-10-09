@@ -65,14 +65,21 @@ android {
         includeInBundle = false
     }
 
-    splits {
-        abi {
-            isEnable = true
-            reset()
-            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
-            isUniversalApk = true
-        }
-    }
+    // ABI splits are deliberately disabled. Each variant therefore produces exactly one
+    // universal APK containing every ABI's native libraries. Upstream split into
+    // armeabi-v7a / arm64-v8a / x86 / x86_64 + universal (5 APKs per variant), but only the
+    // universal and the two ARM builds were ever published - x86 and x86_64 were built and
+    // discarded on every run. Dropping splits cuts the CI packaging work from 15 APKs to 3.
+    //
+    // To re-enable per-ABI APKs later, uncomment:
+    // splits {
+    //     abi {
+    //         isEnable = true
+    //         reset()
+    //         include("armeabi-v7a", "arm64-v8a")
+    //         isUniversalApk = true
+    //     }
+    // }
 
     flavorDimensions += "version"
     productFlavors {

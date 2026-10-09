@@ -205,12 +205,19 @@ Gothwad Tech copyright add karna, upstream ka credit preserve karte hue (GPLv3 r
 
 ### CI/CD (`/.github/workflows/build.yml`)
 
+> **⚠️ Ye workflow restructure ho chuka hai.** Neeche current state hai, upstream ka nahi.
+
 | Item | Detail |
 |---|---|
-| Jobs | `build` (31), `nightly` (311), `release` (354) |
-| **`EXPECTED_SIGNER_SHA256` @ line 25** | `4322294ed4caa2d4294140095818080ffe8acc1fbe3cdc76107df45c5286be40` ← upstream Flow key ka digest, **hard-pinned hai, secret nahi**. Apna keystore banane par **ye line badalni zaroori hai** warna `Verify release signing certificate` step har APK pe fail karega. |
-| Required repo secrets (10) | `RELEASE_KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`, `NIGHTLY_KEYSTORE_BASE64`, `NIGHTLY_STORE_PASSWORD`, `NIGHTLY_KEY_ALIAS`, `NIGHTLY_KEY_PASSWORD`, `LASTFM_API_KEY`, `LASTFM_API_SECRET` (+ `GITHUB_TOKEN` auto) |
-| Tag build guard | `v*` tag pe keystore secret missing → workflow `exit 1` |
+| Jobs | `build`, `release` (tag only). Upstream ka `nightly` job **hata diya gaya**. |
+| Artifacts | **3** — `app-universal-release-apk` (githubRelease), `app-release-aab` (fossRelease, Play Store), `app-debug-apk` (githubDebug) |
+| ABI splits | **Disabled** in `app/build.gradle.kts`. Har variant = 1 universal APK. Pehle 4 ABI + universal = 5 per variant, 15 APKs per run, jisme se x86/x86_64 kabhi publish hi nahi hote the. |
+| Lint steps | **Hata diye** — `app/build.gradle.kts:197-200` me `lint { abortOnError = false }`, matlab lint kabhi build fail nahi karta tha, sirf ~15 min leta tha |
+| `--max-workers` | `1` → **`2`** (GitHub runner par 4 cores hain) |
+| **AAB flavor = `foss`** | Google Play self-updating apps reject karta hai. `github` flavor me `UPDATER_ENABLED = true` (`app/build.gradle.kts:82`), `foss` me `false` (line 87). Isliye Play bundle `foss` se banta hai. Rebrand ke waqt flavor naam reconsider karna. |
+| **`EXPECTED_SIGNER_SHA256`** | Abhi bhi **upstream Flow key** ka digest `4322294e…` hai. Apna keystore banane par **ye badalna zaroori hai** warna `Verify release signing certificate` fail karega. |
+| Required repo secrets | `RELEASE_KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`, `LASTFM_API_KEY`, `LASTFM_API_SECRET` (+ `GITHUB_TOKEN` auto). Nightly ke 4 secrets ab zaroori nahi. |
+| Release job | Tag (`v*`) par `gotube.apk` + `gotube.aab` + `checksums.txt` publish karta hai |
 
 ### Misc gotchas
 
