@@ -367,6 +367,21 @@ grep -rn 'GoTubeStateFlow\|GoTubePreview\|asGoTube\|snapshotGoTube' --include='*
 grep -rn '\bGoTube\b *<' --include='*.kt' app/src | head   # bare 'GoTube<' type usage = leak, MUST be empty
 ```
 
+> **⚠️ Spotless formatting — is phase ke baad `spotlessApply` chalana zaroori hai.**
+> `build.gradle.kts` me `spotless { ratchetFrom(...) }` hai, matlab sirf *changed* files check hoti
+> hain. Is phase me ~2400 files change hongi, isliye spotless un sabko check karega aur
+> `spotlessCheck` fail ho sakta hai. Fix:
+> ```bash
+> ./gradlew spotlessApply      # sab changed files ko format kar dega
+> ./gradlew spotlessCheck      # ab pass hona chahiye
+> ```
+> Ye JDK chahiye — sandbox me nahi chalega, isliye local ya CI par karna.
+>
+> **Background:** ratchet base commit originally upstream `52c4928e…` (A-EDev/Flow) tha. Wo object
+> is repo me exist nahi karta, isliye import ke baad `spotlessCheck` turant fail ho raha tha
+> (`Check Kotlin formatting` step, exit 1). Use hamare import commit
+> `4908f99aab7c6282374dd4359e52ac0ee57f1866` par re-anchor kar diya gaya hai.
+
 ---
 
 ### Phase 4 — File, resource aur manifest rename
