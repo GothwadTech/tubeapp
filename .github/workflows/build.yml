@@ -20,16 +20,17 @@ permissions:
 
 env:
   # SHA-256 of the release signing certificate this repository builds with.
-  # CI measured it off the signed APK on 2026-10-09:
-  #   "app-github-release.apk is signed with '731c73b1…', expected '4322294e…'"
-  # where 4322294e… was the UPSTREAM Flow key still pinned here. Android refuses
-  # to install an update signed by a different key, so this value is what every
-  # installed client is pinned to - do not rotate the keystore without a
-  # migration plan for existing users.
+  # PlusTube signs with the Gothwad Tech release key. Set the expected fingerprint
+  # here once your keystore is in place (repo secret RELEASE_KEYSTORE_BASE64), so CI
+  # can guard the update path: Android refuses to install an update signed by a
+  # different key, so do not rotate the keystore without a migration plan.
   #
   # To re-read it from a keystore:
   #   keytool -list -v -keystore release.keystore | grep SHA256
-  EXPECTED_SIGNER_SHA256: 731c73b1908f9fd4685f3330952d9afe71577493a0ea1de6b8a4f45e8c2ff303
+  #
+  # While this placeholder is empty the workflow only verifies that the APK is
+  # signed and prints the certificate it saw.
+  EXPECTED_SIGNER_SHA256: ""
 
 jobs:
   build:
@@ -126,11 +127,15 @@ jobs:
           fi
 
           actual=$("$apksigner" verify --print-certs "${apks[0]}" | grep -m1 'certificate SHA-256 digest' | awk '{print $NF}')
-          if [ "$actual" != "$EXPECTED_SIGNER_SHA256" ]; then
+          if [ -z "$EXPECTED_SIGNER_SHA256" ]; then
+            echo "::notice::EXPECTED_SIGNER_SHA256 is not set; set it after generating the Gothwad Tech release keystore."
+            echo "APK is signed with: $actual"
+          elif [ "$actual" != "$EXPECTED_SIGNER_SHA256" ]; then
             echo "::error::$(basename "${apks[0]}") is signed with '$actual', expected '$EXPECTED_SIGNER_SHA256'"
             exit 1
+          else
+            echo "OK $(basename "${apks[0]}") -> $actual"
           fi
-          echo "OK $(basename "${apks[0]}") -> $actual"
 
       # versionCode and versionName both come from GITHUB_RUN_NUMBER, set in
       # app/build.gradle.kts (androidComponents -> withBuildType("release")):
@@ -148,7 +153,7 @@ jobs:
             exit 1
           fi
 
-          name="GoTube-v1.0.${GITHUB_RUN_NUMBER}-Release.apk"
+          name="PlusTube-v1.0.${GITHUB_RUN_NUMBER}-Release.apk"
           mkdir -p dist
           cp "${apks[0]}" "dist/$name"
           (cd dist && sha256sum "$name" > checksums.txt && cat checksums.txt)
@@ -192,7 +197,7 @@ jobs:
       - name: Download release APK
         uses: actions/download-artifact@v8
         with:
-          pattern: GoTube-v*-Release.apk
+          pattern: PlusTube-v*-Release.apk
           path: dist/
           merge-multiple: true
 
@@ -204,11 +209,11 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
-          name: GoTube ${{ steps.get_version.outputs.VERSION }}
+          name: PlusTube ${{ steps.get_version.outputs.VERSION }}
           body_path: release-notes.md
           generate_release_notes: false
           files: |
-            dist/GoTube-v*-Release.apk
+            dist/PlusTube-v*-Release.apk
             dist/checksums.txt
           draft: false
           prerelease: false

@@ -49,7 +49,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
 
-    <!-- Device Sync (FLOW-SYNC/1): resolve the host LAN IP for the QR code. -->
+    <!-- Device Sync (PLUSTUBE-SYNC/1): resolve the host LAN IP for the QR code. -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- Device Sync: scan the peer's QR code to receive the session key out-of-band. -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -63,7 +63,7 @@
     </queries>
 
     <application
-        android:name=".FlowApplication"
+        android:name=".PlusTubeApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -72,7 +72,7 @@
         android:label="@string/app_launcher_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Flow"
+        android:theme="@style/Theme.PlusTube"
         android:usesCleartextTraffic="true"
         android:resizeableActivity="true"
         android:requestLegacyExternalStorage="true"
@@ -107,7 +107,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.Flow.Starting">
+            android:theme="@style/Theme.PlusTube.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
@@ -123,7 +123,7 @@
             android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
-            android:theme="@style/Theme.Flow.Starting"
+            android:theme="@style/Theme.PlusTube.Starting"
             android:windowSoftInputMode="adjustResize"
             android:windowLayoutInDisplayCutoutMode="shortEdges">
 
@@ -197,7 +197,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
 
-            <!-- A playlist file shared from Flow opens here and is imported. -->
+            <!-- A playlist file shared from PlusTube opens here and is imported. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.SEND" />
@@ -239,7 +239,7 @@
             android:name=".data.video.downloader.work.DownloadActionReceiver"
             android:exported="false" />
 
-        <!-- Device Sync (FLOW-SYNC/1) foreground service: keeps the LAN WebSocket
+        <!-- Device Sync (PLUSTUBE-SYNC/1) foreground service: keeps the LAN WebSocket
              transfer alive while the screen is off / app is backgrounded. -->
         <service
             android:name=".sync.transport.SyncForegroundService"
@@ -254,11 +254,11 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="io.github.aedev.flow.action.CANCEL_DOWNLOAD" />
-                <action android:name="io.github.aedev.flow.action.RETRY_DOWNLOAD" />
-                <action android:name="io.github.aedev.flow.action.PAUSE_DOWNLOAD" />
-                <action android:name="io.github.aedev.flow.action.RESUME_DOWNLOAD" />
-                <action android:name="io.github.aedev.flow.action.DISMISS_NOTIFICATION" />
+                <action android:name="com.gothwad.tube.action.CANCEL_DOWNLOAD" />
+                <action android:name="com.gothwad.tube.action.RETRY_DOWNLOAD" />
+                <action android:name="com.gothwad.tube.action.PAUSE_DOWNLOAD" />
+                <action android:name="com.gothwad.tube.action.RESUME_DOWNLOAD" />
+                <action android:name="com.gothwad.tube.action.DISMISS_NOTIFICATION" />
             </intent-filter>
         </receiver>
 
@@ -286,7 +286,7 @@
             android:exported="true"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Flow">
+            android:theme="@style/Theme.PlusTube">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -392,7 +392,7 @@
         </receiver>
 
         <!-- App Icon Variants (via activity-alias)                          -->
-        <!-- Default: Flow Red -->
+        <!-- Default: PlusTube Red -->
         <activity-alias
             android:name=".IconFlowRed"
             android:enabled="true"
@@ -406,7 +406,7 @@
             </intent-filter>
         </activity-alias>
 
-        <!-- Flow Light -->
+        <!-- PlusTube Light -->
         <activity-alias
             android:name=".IconFlowLight"
             android:enabled="false"
@@ -420,7 +420,7 @@
             </intent-filter>
         </activity-alias>
 
-        <!-- Flow Play (white background, red video frame + play mark) -->
+        <!-- PlusTube Play (white background, red video frame + play mark) -->
         <activity-alias
             android:name=".IconFlowPlay"
             android:enabled="false"
@@ -631,7 +631,7 @@
         </activity-alias>
 
 
-        <!-- Files Flow hands to other apps: recap cards and playlist files, only from their cache folders. -->
+        <!-- Files PlusTube hands to other apps: recap cards and playlist files, only from their cache folders. -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.files"

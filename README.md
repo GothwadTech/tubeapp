@@ -1,46 +1,41 @@
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/banners/flow-android-dark.svg">
-    <img alt="Flow. Privacy-first YouTube and YouTube Music for Android, with recommendations that stay on your phone." src="https://assets.flow-tube.org/v1/banners/flow-android-light.svg" width="100%">
-  </picture>
+  <h1>PlusTube</h1>
 
-  <h3>A privacy-respecting YouTube and YouTube Music client for Android with a local recommendation engine.</h3>
+  <h3>Gothwad Tube — a Gothwad Tech product.<br>A privacy-respecting YouTube and YouTube Music client for Android with a local recommendation engine.</h3>
 
   <p>
-  <a href="https://github.com/A-EDev/Flow/releases/latest"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-github-dark.svg"><img alt="Get it on GitHub" src="https://assets.flow-tube.org/v1/badges/pill/get-github-light.svg" height="60"></picture></a>
-  <a href="https://apt.izzysoft.de/packages/io.github.aedev.flow"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-izzyondroid-dark.svg"><img alt="Get it on IzzyOnDroid" src="https://assets.flow-tube.org/v1/badges/pill/get-izzyondroid-light.svg" height="60"></picture></a>
-  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/A-EDev/Flow/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-obtainium-dark.svg"><img alt="Get it on Obtainium" src="https://assets.flow-tube.org/v1/badges/pill/get-obtainium-light.svg" height="60"></picture></a>
-  <a href="https://nightly.link/A-EDev/Flow/workflows/build/main/flow-nightly-apk.zip"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-nightly-dark.svg"><img alt="Try the Nightly build" src="https://assets.flow-tube.org/v1/badges/pill/get-nightly-light.svg" height="60"></picture></a>
+  <a href="https://github.com/GothwadTech/tubeapp/releases/latest"><img alt="Get it on GitHub" src="https://img.shields.io/badge/Get_it_on-GitHub-181717?logo=github&style=for-the-badge" height="48"></a>
+  <a href="https://github.com/GothwadTech/tubeapp/releases/tag/nightly"><img alt="Try the Nightly build" src="https://img.shields.io/badge/Nightly-build-blue?style=for-the-badge" height="48"></a>
   </p>
   <p>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/android-dark.svg"><img alt="Android 8.0+" src="https://assets.flow-tube.org/v1/badges/split/android-light.svg" height="32"></picture>
-  <a href="https://github.com/A-EDev/Flow/releases/latest"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/release-dark.svg"><img alt="Latest release" src="https://assets.flow-tube.org/v1/badges/split/release-light.svg" height="32"></picture></a>
-  <a href="https://github.com/A-EDev/Flow/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/downloads-dark.svg"><img alt="Downloads" src="https://assets.flow-tube.org/v1/badges/split/downloads-light.svg" height="32"></picture></a>
-  <a href="License"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/license-dark.svg"><img alt="License: GPL-3.0" src="https://assets.flow-tube.org/v1/badges/split/license-light.svg" height="32"></picture></a>
-  <a href="#cert"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/signed-dark.svg"><img alt="Signed: SHA-256 certificate" src="https://assets.flow-tube.org/v1/badges/split/signed-light.svg" height="32"></picture></a>
+  <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&style=flat-square">
+  <a href="https://github.com/GothwadTech/tubeapp/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/GothwadTech/tubeapp?style=flat-square"></a>
+  <a href="License"><img alt="License: GPL-3.0" src="https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square"></a>
   </p>
 
   <p>
-    Flow is a YouTube client built with Jetpack Compose and Material 3.<br>
-    It includes FlowNeuro, a recommendation engine that runs entirely on your device — no accounts, no tracking, no data leaves your phone.
+    PlusTube is a YouTube client built with Jetpack Compose and Material 3.<br>
+    It includes PlusTube Neuro, a recommendation engine that runs entirely on your device — no accounts, no tracking, no data leaves your phone.
   </p>
-  
+
   <p>
-    <a href="https://github.com/A-EDev/Flow/releases"><b>Download APK</b></a> · 
-    <a href="https://github.com/A-EDev/Flow/wiki"><b>Documentation</b></a> · 
-    <a href="https://www.reddit.com/r/Flow_Official/"><b>Subreddit</b></a> · 
-    <a href="#support--donations"><b>Donate</b></a> .
+    <a href="https://github.com/GothwadTech/tubeapp/releases"><b>Download APK</b></a> ·
+    <a href="https://tubeapp.gothwadtech.com"><b>Website</b></a> ·
+    <a href="https://www.gothwadtech.com"><b>Gothwad Tech</b></a> ·
+    <a href="https://x.com/GothwadTech"><b>X (@GothwadTech)</b></a> ·
     <a href="#translate"><b>Translations</b></a>
   </p>
 </div>
 
 ---
 
-## Why Flow?
+## Why PlusTube?
 
 Most open-source YouTube clients give you playback but no way to discover new content. You either use the official app and get tracked, or you use an alternative and lose recommendations entirely.
 
-Flow gives you both. The recommendation engine learns what you like by analyzing your watch behavior locally. It never leaves your devices. You can inspect everything it knows about you, adjust it, or wipe it at any time.
+PlusTube gives you both. The recommendation engine learns what you like by analyzing your watch behavior locally. It never leaves your devices. You can inspect everything it knows about you, adjust it, or wipe it at any time.
+
+PlusTube is the new home of the app formerly developed as the open-source *Flow* client. The project continues under Gothwad Tech as part of its product family — **Gothwad Mail, Gothwad Drive, Gothwad Tube** and more.
 
 ---
 
@@ -70,7 +65,7 @@ Flow gives you both. The recommendation engine learns what you like by analyzing
 - Fetches tracks from YouTube Music
 - Playback speed control for music playback
 
-### Recommendations (FlowNeuro Engine)
+### Recommendations (PlusTube Neuro Engine)
 - Runs 100% on-device — no server, no telemetry, no account needed
 - Learns from what you watch, skip, like, dislike, search for, and how long you watch
 - Distinguishes weekday and weekend patterns, morning and night preferences
@@ -129,84 +124,61 @@ Flow gives you both. The recommendation engine learns what you like by analyzing
 </div>
 
 ---
+
 ## Download
 
 ### Stable Release
 
-<div align="center">
-  <a href="https://github.com/A-EDev/Flow/releases/latest"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-github-dark.svg"><img alt="Get it on GitHub" src="https://assets.flow-tube.org/v1/badges/pill/get-github-light.svg" height="60"></picture></a>
-  <a href="https://apt.izzysoft.de/packages/io.github.aedev.flow"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-izzyondroid-dark.svg"><img alt="Get it on IzzyOnDroid" src="https://assets.flow-tube.org/v1/badges/pill/get-izzyondroid-light.svg" height="60"></picture></a>
-  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/A-EDev/Flow/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-obtainium-dark.svg"><img alt="Get it on Obtainium" src="https://assets.flow-tube.org/v1/badges/pill/get-obtainium-light.svg" height="60"></picture></a>
-</div>
+Grab the latest APK from the [releases page](https://github.com/GothwadTech/tubeapp/releases/latest).
 
 #### Which APK should I download?
 
-Each release has six APKs: three device types, each in a GitHub build and a FOSS build.
+Each release ships APKs for three device types, each in a GitHub build and a FOSS build.
 
 | Your device | GitHub build | FOSS build |
 | :--- | :--- | :--- |
-| Most phones and tablets (64-bit, `arm64-v8a`) | `flow-arm64-v8a.apk` | `flow-foss-arm64-v8a.apk` |
-| Older 32-bit phones (`armeabi-v7a`) | `flow-armeabi-v7a.apk` | `flow-foss-armeabi-v7a.apk` |
-| Any device (universal, larger download) | `flow.apk` | `flow-foss.apk` |
+| Most phones and tablets (64-bit, `arm64-v8a`) | `plustube-arm64-v8a.apk` | `plustube-foss-arm64-v8a.apk` |
+| Older 32-bit phones (`armeabi-v7a`) | `plustube-armeabi-v7a.apk` | `plustube-foss-armeabi-v7a.apk` |
+| Any device (universal, larger download) | `plustube.apk` | `plustube-foss.apk` |
 
-- **Not sure?** `flow-arm64-v8a.apk` works on almost every phone. `flow.apk` works on all of them.
+- **Not sure?** `plustube-arm64-v8a.apk` works on almost every phone. `plustube.apk` works on all of them.
 - **GitHub build:** updates itself from inside the app and supports Discord Rich Presence.
-- **FOSS build:** the same app without the built-in updater and the Discord integration. This is the build on IzzyOnDroid; update it through IzzyOnDroid or Obtainium.
+- **FOSS build:** the same app without the built-in updater and the Discord integration.
 - `checksums.txt` in each release lists the SHA-256 of every APK.
 
 ### Nightly Build
 > ⚠️ Nightly builds are unstable and may contain bugs. Use at your own risk.
 
-Flow Nightly is built from every commit to `main`. It installs next to the stable app as a separate app called **Flow Nightly**, keeps its own data, and updates itself to each new nightly from inside the app.
+PlusTube Nightly is built from every commit to `main`. It installs next to the stable app as a separate app called **PlusTube Nightly**, keeps its own data, and updates itself to each new nightly from inside the app.
 
-<div align="center">
-  <a href="https://github.com/A-EDev/Flow/releases/tag/nightly"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-nightly-dark.svg"><img alt="Try the Nightly build" src="https://assets.flow-tube.org/v1/badges/pill/get-nightly-light.svg" height="60"></picture></a>
-</div>
+Download it from the [nightly release tag](https://github.com/GothwadTech/tubeapp/releases/tag/nightly).
 
-### Requirements 
+### Requirements
 **Minimum Requirement:** Android 8.0+
-<a id="cert"></a>
-### Verifying Authenticity
-To ensure the authenticity of the APK and verify it has not been tampered with, you can check the signing certificate fingerprint using tools like [AppVerifier](https://github.com/soupslurpr/AppVerifier).
-
-**Release Certificate SHA-256 Fingerprint:**
-`43:22:29:4E:D4:CA:A2:D4:29:41:40:09:58:18:08:0F:FE:8A:CC:1F:BE:3C:DC:76:10:7D:F4:5C:52:86:BE:40`
 
 ---
 
-<a id="support--donations"></a>
-## 💰 Support Development
+<a id="support"></a>
+## 💜 Support
 
-Flow is a free and open-source project. As an independent developer without traditional banking access, keeping this project alive relies entirely on community support. 
+PlusTube is free and open source. To support the project or learn more about Gothwad Tech and its products (Gothwad Mail, Gothwad Drive, Gothwad Tube and more), visit:
 
-**You can now easily support the project using a Credit Card, Apple Pay, or PayPal via Patreon!** (You can choose to support monthly, or just leave a simple one-time tip in the shop).
-
-<a href="https://patreon.com/A_EDev"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/support-patreon-dark.svg"><img alt="Support Flow on Patreon" src="https://assets.flow-tube.org/v1/badges/pill/support-patreon-light.svg" height="60"></picture></a>
-
-<br>
-
-**Prefer to send Crypto directly?**
-If you already use crypto, you can send it directly to my wallets below:
-
-| Coin | Network | Address |
-| :--- | :--- | :--- |
-| **USDT** | TRC20 (Tron) | `TRz7VDrTWwCLCfQmYBEJakqcZgbFNWfUMP` |
-| **Bitcoin** | BTC | `bc1qgmkkxxvzvsymtpfazqfl93jw6k4jgy0xmrtnv8` |
-| **Ethereum** | ERC-20 | `0xfbac6f464fec7fe458e318971a42ba45b305b70e` |
-| **Solana** | SOL | `7b3SLgiVPb8qQUvERSPGRWoFoiGEDvkFuY98M1GEngug` |
-| **Monero** | XMR | `8AgaxZnpEvT8VXJpczpL7BQejwSEw97saJmKYqq4zKErbe9bkYSwUhJ813msPPbdYhF11oz4N7tfEj4Zi6k27fKD83ca1if` |
-
-*Your support helps me maintain the project and add amazing new features!*
+- **Website:** [www.gothwadtech.com](https://www.gothwadtech.com)
+- **PlusTube site:** [tubeapp.gothwadtech.com](https://tubeapp.gothwadtech.com)
+- **X / Twitter:** [@GothwadTech](https://x.com/GothwadTech)
 
 ---
 
-## 🙏 Acknowledgments
+## 🙏 Acknowledgments & Attribution
 
-Flow stands on the shoulders of giants. Special thanks to:
+PlusTube is built on the open-source **[Flow](https://github.com/A-EDev/Flow)** project by **A-EDev**, and continues under the same **GPL-3.0** license. Full credit belongs to Flow and everyone who contributed to it — see [ATTRIBUTION.md](ATTRIBUTION.md) for the complete list of contributors and the upstream project notice.
 
+PlusTube also stands on the shoulders of giants. Special thanks to:
+
+*   **[Flow](https://github.com/A-EDev/Flow):** The upstream project this app is built on, by A-EDev and its 85+ contributors.
 *   **[NewPipeExtractor](https://github.com/TeamNewPipe/NewPipeExtractor):** The backbone of our data extraction.
 *   **[NewPipe](https://github.com/TeamNewPipe/NewPipe):** For inspiration from their solid foundation for YouTube data handling.
-*   **[PipePipe](https://codeberg.org/NullPointerException/PipePipe):** For their SABR and InnerTube playback implementation, which guided Flow's YouTube streaming pipeline.
+*   **[PipePipe](https://codeberg.org/NullPointerException/PipePipe):** For their SABR and InnerTube playback implementation, which guided the YouTube streaming pipeline.
 *   **[PipePipe Developer Docs](https://priveetee.github.io/Docs-PipePipe/):** For their reference documentation on SABR, BotGuard/PoToken attestation, and InnerTube extraction internals.
 *   **[MetroList](https://github.com/MetrolistGroup/Metrolist):** Inspiration for the Hybrid Music fetching approach, Lyrics handling and some icons design references.
 *   **[LibreTube](https://github.com/LibreTube/LibreTube):** Inspiration for SponsorBlock and DeArrow handling and some icons design references.
@@ -220,41 +192,25 @@ Flow stands on the shoulders of giants. Special thanks to:
 
 <a id="translate"></a>
 ## Translations
-Help translate Flow into your language! 
+Help translate PlusTube into your language! Open a pull request with your changes to `app/src/main/res/values-*/strings.xml`.
 
-<a href="https://hosted.weblate.org/engage/flow/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/translate-dark.svg"><img alt="Help translate on Weblate" src="https://assets.flow-tube.org/v1/badges/pill/translate-light.svg" height="60"></picture></a>
-
-[![Translation status](https://hosted.weblate.org/widget/flow/strings/horizontal-auto.svg)](https://hosted.weblate.org/engage/flow/)
 </div>
 
 ---
 
 ## 📄 License & Copyright
 
-**Flow** is Free Software: You can use, study, share, and improve it at your will.
+**PlusTube** is Free Software: you can use, study, share, and improve it at will.
 It is distributed under the **GNU General Public License v3 (GPLv3)**.
 
-**Copyright © 2025-2026 A-EDev**
+**Copyright © 2026 Gothwad Tech (PlusTube)**
+Based on **Flow** — Copyright © 2025-2026 A-EDev — [github.com/A-EDev/Flow](https://github.com/A-EDev/Flow)
 
 > 🚨 **For Developers:**
-> This license requires that any project using Flow's source code (including the `FlowNeuroEngine` algorithm) must also be **Open Source** under the GPLv3 license. You may not use this code in a proprietary or closed-source application.
-
----
-
-## Star History
-
-<a href="https://star-history.dera.page/#A-EDev/Flow&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=A-EDev/Flow&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=A-EDev/Flow&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=A-EDev/Flow&type=date&legend=top-left" />
- </picture>
-</a>
+> This license requires that any project using this source code (including the recommendation-engine algorithm) must also be **Open Source** under the GPLv3 license. You may not use this code in a proprietary or closed-source application. Derivatives must also keep the attribution to the original Flow project.
 
 ---
 
 <div align="center">
-  <a href="https://github.com/Flow-Tube"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/part-of-flow-dark.svg"><img alt="Part of the Flow ecosystem" src="https://assets.flow-tube.org/v1/badges/pill/part-of-flow-light.svg" height="60"></picture></a>
-  <br><br>
-  <sub>Made with ❤️ by A-EDev</sub>
+  <sub>PlusTube · Gothwad Tube — a Gothwad Tech product · Made with ❤️ by <a href="https://github.com/GothwadTech">Gothwad Tech</a></sub>
 </div>

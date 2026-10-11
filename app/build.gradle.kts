@@ -32,14 +32,14 @@ fun secretValue(
         ?: ""
 
 android {
-    namespace = "io.github.aedev.flow"
+    namespace = "com.gothwad.tube"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "io.github.aedev.flow"
+        applicationId = "com.gothwad.tube"
         minSdk = 26
         targetSdk = 36
-        versionCode = 18
+        versionCode = 19
         versionName = "2.2.1"
 
         buildConfigField("int", "NIGHTLY_RUN", "0")
@@ -47,7 +47,7 @@ android {
         buildConfigField("String", "LASTFM_API_KEY", "\"${secretValue("lastfmApiKey", "lastfm.apiKey", "LASTFM_API_KEY")}\"")
         buildConfigField("String", "LASTFM_API_SECRET", "\"${secretValue("lastfmApiSecret", "lastfm.apiSecret", "LASTFM_API_SECRET")}\"")
 
-        testInstrumentationRunner = "io.github.aedev.flow.HiltTestRunner"
+        testInstrumentationRunner = "com.gothwad.tube.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -213,7 +213,7 @@ androidComponents {
     onVariants(selector().withBuildType("nightly")) { variant ->
         val run = providers.environmentVariable("GITHUB_RUN_NUMBER").map(String::toInt)
         val sha = providers.environmentVariable("GITHUB_SHA").map { it.take(7) }
-        val base = providers.gradleProperty("flow.nightlyBaseVersion")
+        val base = providers.gradleProperty("plustube.nightlyBaseVersion")
         variant.outputs.forEach { output ->
             val localCode = output.versionCode.get()
             val localName = output.versionName.get()
@@ -237,7 +237,7 @@ androidComponents {
     // versionName is "1.0.<run number>", so the two always agree on the final segment:
     //   run  12 -> versionCode  12, versionName 1.0.12
     //   run 136 -> versionCode 136, versionName 1.0.136
-    // The published APK is named GoTube-v<versionName>-Release.apk by the workflow.
+    // The published APK is named PlusTube-v<versionName>-Release.apk by the workflow.
     // Local release builds keep defaultConfig's values because GITHUB_RUN_NUMBER is
     // not set outside CI.
     onVariants(selector().withBuildType("release")) { variant ->
