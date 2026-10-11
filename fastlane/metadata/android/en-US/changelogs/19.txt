@@ -1,0 +1,5 @@
+The app is now PlusTube — a Gothwad Tech product (Gothwad Tube).
+
+- Rebrand: new name, new package (com.gothwad.tube), updated links
+- About screen now shows the Gothwad Tech product family and credits the original Flow project and its contributors
+- Support now goes through gothwadtech.com

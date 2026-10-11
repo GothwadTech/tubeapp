@@ -13,5 +13,5 @@
     <!-- White F foreground -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M10 7L18 7L17.2 9.5H12.8L12.2 11.5H16L15.2 14H11.5L10.5 17H7.5L10 7Z" />
+        android:pathData="M9.8 7.8L17.2 12L9.8 16.2Z" />
 </vector>
