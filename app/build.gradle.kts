@@ -39,8 +39,8 @@ android {
         applicationId = "com.gothwad.tube"
         minSdk = 26
         targetSdk = 36
-        versionCode = 19
-        versionName = "2.2.1"
+        versionCode = 1
+        versionName = "1.0.1"
 
         buildConfigField("int", "NIGHTLY_RUN", "0")
         // Last.fm keys come from the CI secrets; builds without them ask the viewer for their own key.
@@ -81,6 +81,8 @@ android {
     //     }
     // }
 
+    // Only the GitHub distribution is built: it includes the in-app updater and Discord.
+    // Keeping its variant name avoids moving flavor-specific sources and baseline profiles.
     flavorDimensions += "version"
     productFlavors {
         create("github") {
@@ -88,10 +90,6 @@ android {
             isDefault = true
             buildConfigField("Boolean", "UPDATER_ENABLED", "true")
             buildConfigField("String", "DISCORD_APPLICATION_ID", "\"1526515771021328514\"")
-        }
-        create("foss") {
-            dimension = "version"
-            buildConfigField("Boolean", "UPDATER_ENABLED", "false")
         }
     }
 
@@ -233,13 +231,9 @@ androidComponents {
         )
     }
 
-    // CI releases are numbered by the workflow run. versionCode is the run number and
-    // versionName is "1.0.<run number>", so the two always agree on the final segment:
-    //   run  12 -> versionCode  12, versionName 1.0.12
-    //   run 136 -> versionCode 136, versionName 1.0.136
-    // The published APK is named PlusTube-v<versionName>-Release.apk by the workflow.
-    // Local release builds keep defaultConfig's values because GITHUB_RUN_NUMBER is
-    // not set outside CI.
+    // CI releases use their workflow run number directly: run N becomes versionCode N,
+    // versionName 1.0.N, tag v1.0.N, and PlusTube-1.0.N.apk. PR runs consume numbers too.
+    // Local release builds retain defaultConfig's version when GITHUB_RUN_NUMBER is absent.
     onVariants(selector().withBuildType("release")) { variant ->
         val run = providers.environmentVariable("GITHUB_RUN_NUMBER").map(String::toInt)
         variant.outputs.forEach { output ->

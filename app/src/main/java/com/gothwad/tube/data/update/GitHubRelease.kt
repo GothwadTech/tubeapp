@@ -10,6 +10,7 @@ private const val SHA256_PREFIX = "sha256:"
 private const val FOSS_PREFIX = "plustube-foss"
 private const val UNIVERSAL_APK = "plustube.apk"
 private const val APK_SUFFIX = ".apk"
+private val VersionedReleaseApk = Regex("""PlusTube-1\.0\.\d+\.apk""", RegexOption.IGNORE_CASE)
 private val NightlyApk = Regex("""plustube-nightly-(\d+)\.apk""", RegexOption.IGNORE_CASE)
 
 @Serializable
@@ -70,8 +71,8 @@ internal fun GitHubRelease.toNightlyReleaseIfNewer(currentRun: Int): AppRelease?
 }
 
 /**
- * The github-flavour APK for this device: the split build for its preferred ABI, else the universal
- * `plustube.apk`, else any github APK. Foss builds are never picked; they are signed for other stores.
+ * Prefer the one versioned universal release APK (`PlusTube-1.0.<run>.apk`). Older releases
+ * may still contain ABI splits or `plustube.apk`; never pick a FOSS APK for this build.
  */
 internal fun selectApk(
     assets: List<GitHubAsset>,
@@ -81,6 +82,8 @@ internal fun selectApk(
         assets.filter {
             it.name.endsWith(APK_SUFFIX, ignoreCase = true) && !it.name.startsWith(FOSS_PREFIX, ignoreCase = true)
         }
+    val versioned = github.filter { VersionedReleaseApk.matches(it.name) }
+    if (versioned.isNotEmpty()) return versioned.singleOrNull()
     val splits = github.filter { asset -> supportedAbis.any { asset.name.equals("plustube-$it.apk", ignoreCase = true) } }
     if (splits.isNotEmpty()) {
         return supportedAbis.firstNotNullOfOrNull { abi -> splits.firstOrNull { it.name.equals("plustube-$abi.apk", ignoreCase = true) } }

@@ -36,8 +36,8 @@ private const val WORK_NAME = "app_update_download"
 private const val INSTALL_REQUEST = 7301
 
 /**
- * Downloads a release in the background and installs it through a platform installer session.
- * Android still asks the user to confirm, and refuses any APK not signed with Flow's key.
+ * Downloads a release only when the user requests it and installs it through a platform
+ * installer session requiring user confirmation. Android rejects APKs signed with another key.
  */
 @Singleton
 class AppUpdateInstaller
@@ -120,7 +120,7 @@ class AppUpdateInstaller
                         setAppPackageName(context.packageName)
                         setSize(apk.length())
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED)
+                            setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_REQUIRED)
                         }
                     }
                 val sessionId = installer.createSession(params)
