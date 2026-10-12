@@ -14,19 +14,7 @@
             android:fillColor="@color/icon_bg_expressive_segmented"
             android:pathData="M37,18H71A19,19 0 0,1 90,37V71A19,19 0 0,1 71,90H37A19,19 0 0,1 18,71V37A19,19 0 0,1 37,18Z" />
         <path
-            android:strokeColor="#FFFFFFFF"
-            android:strokeWidth="11.5"
-            android:strokeLineCap="round"
-            android:pathData="M42.26 66.25L47.02 41.75" />
-        <path
-            android:strokeColor="#FFFFFFFF"
-            android:strokeWidth="11.5"
-            android:strokeLineCap="round"
-            android:pathData="M61.72 41.75L73.66 41.75" />
-        <path
-            android:strokeColor="#FFFFFFFF"
-            android:strokeWidth="11.5"
-            android:strokeLineCap="round"
-            android:pathData="M59.05 55.50L64.51 55.50" />
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M46 38L72 54L46 70Z" />
     </group>
 </vector>

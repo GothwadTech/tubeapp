@@ -196,7 +196,7 @@
     <string name="time_today">Сьогодні</string>
     <string name="time_yesterday">Вчора</string>
     <string name="time_earlier">Раніше</string>
-    <string name="icon_name_flow_red">Червоний PlusTube</string>
+    <string name="icon_name_flow_red">Синій PlusTube</string>
     <string name="icon_name_amoled">Темний AMOLED</string>
     <string name="icon_name_monochrome">Монохром</string>
     <string name="icon_name_ghost">Привид</string>
@@ -1240,7 +1240,7 @@
     <string name="appearance_system_defaults_subtitle">Виберіть тему, яка використовуватиметься під час перемикання пристрою між світлим і темним режимами.</string>
     <string name="appearance_system_light_theme">Світла тема</string>
     <string name="appearance_system_dark_theme">Темна тема</string>
-    <string name="icon_name_flow_light">Світлий PlusTube</string>
+    <string name="icon_name_flow_light">Темний PlusTube</string>
     <string name="icon_name_material_sky">Material Sky</string>
     <string name="icon_name_material_mint">Material Mint</string>
     <string name="player_adaptive_size_subtitle">Підігнати розмір програвача під відео. У вимкненому режимі зберігається формат 16:9.</string>

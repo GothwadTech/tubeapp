@@ -614,8 +614,8 @@
     <string name="app_icon_picker_subtitle">Uygulama simgesi stilini seç. Değişiklik anında uygulanır ve ekran kısa süreliğine yenilenir.</string>
     <string name="app_icon_picker_warning">Uyarı: Simge değişikliği, uygulama kısayolunu ana ekranından kısa bir süreliğine kaldırabilir. Gerekirse kısayolu tekrar ekle.</string>
     <string name="app_icon_apply_toast">Simge değiştirildi - Ana ekranın yenilenecek</string>
-    <string name="icon_name_flow_red">PlusTube Kırmızısı</string>
-    <string name="icon_name_flow_light">PlusTube Aydınlık</string>
+    <string name="icon_name_flow_red">PlusTube Mavisi</string>
+    <string name="icon_name_flow_light">PlusTube Karanlık</string>
     <string name="icon_name_amoled">Derin Amoled</string>
     <string name="icon_name_monochrome">Siyah Beyaz</string>
     <string name="icon_name_ghost">Hayalet</string>

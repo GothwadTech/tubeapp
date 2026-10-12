@@ -516,7 +516,7 @@
     <string name="settings_item_region">Región de tendencia</string>
     <string name="settings_item_search_history">Búsqueda e historial</string>
     <string name="settings_item_search_history_subtitle">Borrar historial, gestionar sugerencias</string>
-    <string name="icon_name_flow_red">PlusTube Rojo</string>
+    <string name="icon_name_flow_red">PlusTube Azul</string>
     <string name="icon_name_monochrome">Monocromo</string>
     <string name="icon_name_ghost">Fantasma</string>
     <string name="icon_name_dynamic">Material You</string>
@@ -1482,7 +1482,7 @@
     <string name="appearance_system_dark_theme">Tema del modo oscuro</string>
     <string name="theme_desc_material_you">Colores extraídos del fondo de pantalla en Android 12 y posteriores.</string>
     <string name="appearance_system_defaults_title">Temas predeterminados del sistema</string>
-    <string name="icon_name_flow_light">PlusTube Claro</string>
+    <string name="icon_name_flow_light">PlusTube Oscuro</string>
     <string name="icon_name_material_sky">Material Sky</string>
     <string name="icon_name_material_mint">Material Mint</string>
     <string name="content_settings_subs_show_videos_title">Vídeos de suscripciones</string>

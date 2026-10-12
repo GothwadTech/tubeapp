@@ -1064,7 +1064,7 @@
     <string name="settings_item_time_management">إدارة الوقت</string>
     <string name="settings_item_time_management_subtitle">إحصائيات الاستخدام، تذكيرات وقت النوم</string>
     <string name="app_icon_apply_toast">تم تحديث الأيقونة - سيتم تحديث مشغل التطبيقات الخاص بك</string>
-    <string name="icon_name_flow_red">أحمر PlusTube</string>
+    <string name="icon_name_flow_red">أزرق PlusTube</string>
     <string name="icon_name_dynamic">ألوان ديناميكية</string>
     <string name="player_nav_btn_subtitle">إظهار أزرار الفيديو التالي و السابق في المشغل المصغر</string>
     <string name="lyrics_provider_title">مُقدّم كلمات الأغاني</string>
@@ -1426,7 +1426,7 @@
     <string name="appearance_system_defaults_subtitle">إختر السمة التي سيتم استخدامها عند تبديل جهازك بين الوضع الفاتح والوضع الداكن.</string>
     <string name="appearance_system_light_theme">الوضع الفاتح</string>
     <string name="appearance_system_dark_theme">الوضع الداكن</string>
-    <string name="icon_name_flow_light">فاتح PlusTube</string>
+    <string name="icon_name_flow_light">داكن PlusTube</string>
     <string name="icon_name_material_sky">سماوي Material</string>
     <string name="icon_name_material_mint">نعناع Material</string>
     <string name="theme_name_material_you">الألوان الديناميكية</string>

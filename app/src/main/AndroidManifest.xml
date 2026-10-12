@@ -392,7 +392,7 @@
         </receiver>
 
         <!-- App Icon Variants (via activity-alias)                          -->
-        <!-- Default: PlusTube Red -->
+        <!-- Default: PlusTube Blue (white background, #0494F4 play badge) -->
         <activity-alias
             android:name=".IconFlowRed"
             android:enabled="true"
@@ -406,7 +406,7 @@
             </intent-filter>
         </activity-alias>
 
-        <!-- PlusTube Light -->
+        <!-- PlusTube Dark (dark background, #0494F4 play badge) -->
         <activity-alias
             android:name=".IconFlowLight"
             android:enabled="false"
@@ -420,7 +420,7 @@
             </intent-filter>
         </activity-alias>
 
-        <!-- PlusTube Play (white background, red video frame + play mark) -->
+        <!-- PlusTube Play (white background, #0494F4 video frame + play mark) -->
         <activity-alias
             android:name=".IconFlowPlay"
             android:enabled="false"

@@ -5,12 +5,12 @@
     android:width="48dp"
     android:height="36dp"
     android:viewportWidth="20.08"
-    android:viewportHeight="15.22">
+    android:viewportHeight="16.0">
     <group
-        android:translateX="-1.96"
-        android:translateY="-4.77">
+        android:translateX="-1.60"
+        android:translateY="-4.35">
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M9.8 7.8L17.2 12L9.8 16.2Z" />
+            android:pathData="M8.90 7.90L15.10 11.40L8.90 14.90Z" />
     </group>
 </vector>
