@@ -10,3 +10,6 @@ val DescriptionLinkBlue = Color(0xFF3EA6FF)
 
 /** YouTube's brand red, for marks that stay red in every theme. */
 val YouTubeRed = Color(0xFFFF0000)
+
+/** PlusTube's brand blue. The app badge keeps this colour in every theme; only the surrounding UI follows the palette. */
+val PlusTubeBrandBlue = Color(0xFF0494F4)

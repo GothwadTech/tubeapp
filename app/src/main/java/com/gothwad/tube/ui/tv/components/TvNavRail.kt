@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.gothwad.tube.R
 import com.gothwad.tube.ui.tv.navigation.TvDestination
+import com.gothwad.tube.ui.theme.PlusTubeBrandBlue
 import com.gothwad.tube.ui.tv.theme.LocalTvDimens
 
 /**
@@ -103,19 +104,18 @@ fun TvNavRail(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                // Two-layer brand badge (tight crop) tinted from the active
-                // color scheme, so the logo follows all 28 theme modes.
+                // Two-layer brand badge in the fixed PlusTube blue, with a white glyph.
                 Box {
                     Icon(
                         painter = painterResource(R.drawable.ic_flow_badge_shape),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = PlusTubeBrandBlue,
                         modifier = Modifier.size(width = 48.dp, height = 36.dp),
                     )
                     Icon(
                         painter = painterResource(R.drawable.ic_flow_badge_glyph),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = Color.White,
                         modifier = Modifier.size(width = 48.dp, height = 36.dp),
                     )
                 }

@@ -5,12 +5,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.PathParser
+import com.gothwad.tube.ui.theme.PlusTubeBrandBlue
 
 // SVG path data — a single unbreakable token, so the line-length rule cannot be satisfied by wrapping.
 @Suppress("ktlint:standard:max-line-length")
@@ -32,8 +33,9 @@ internal fun FlowHeaderLogoIcon(
     isDeepFlowActive: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
+    // Brand badge: fixed PlusTube blue with a white glyph in every theme, like the launcher icon.
+    val primaryColor = PlusTubeBrandBlue
+    val onPrimaryColor = Color.White
 
     val bgPath =
         remember {
