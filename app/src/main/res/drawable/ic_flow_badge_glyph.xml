@@ -1,16 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- The play glyph of the PlusTube badge (same tight-crop viewport as
-     ic_flow_badge_shape) so the two layers can be tinted independently. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="48dp"
-    android:height="36dp"
+    android:width="20.08dp"
+    android:height="16dp"
     android:viewportWidth="20.08"
-    android:viewportHeight="15.22">
-    <group
-        android:translateX="-1.96"
-        android:translateY="-4.77">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M9.8 7.8L17.2 12L9.8 16.2Z" />
-    </group>
+    android:viewportHeight="16">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7.65 4.65 L12.61 7.52 L7.65 10.39Z" />
 </vector>

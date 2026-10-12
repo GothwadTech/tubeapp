@@ -14,19 +14,8 @@
             android:fillColor="@color/icon_bg_expressive_segmented"
             android:pathData="M37,18H71A19,19 0 0,1 90,37V71A19,19 0 0,1 71,90H37A19,19 0 0,1 18,71V37A19,19 0 0,1 37,18Z" />
         <path
-            android:strokeColor="#FFFFFFFF"
-            android:strokeWidth="11.5"
-            android:strokeLineCap="round"
-            android:pathData="M42.26 66.25L47.02 41.75" />
-        <path
-            android:strokeColor="#FFFFFFFF"
-            android:strokeWidth="11.5"
-            android:strokeLineCap="round"
-            android:pathData="M61.72 41.75L73.66 41.75" />
-        <path
-            android:strokeColor="#FFFFFFFF"
-            android:strokeWidth="11.5"
-            android:strokeLineCap="round"
-            android:pathData="M59.05 55.50L64.51 55.50" />
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M70.80 44.18 C70.37 42.59 69.11 41.33 67.52 40.90 C64.64 40.12 53.08 40.12 53.08 40.12 C53.08 40.12 41.51 40.12 38.63 40.90 C37.04 41.33 35.78 42.59 35.35 44.18 C34.58 47.06 34.58 53.08 34.58 53.08 C34.58 53.08 34.58 59.09 35.35 61.97 C35.78 63.56 37.04 64.82 38.63 65.25 C41.51 66.03 53.08 66.03 53.08 66.03 C53.08 66.03 56.05 66.03 59.35 65.93 A9.25 9.25 0 0 1 71.58 53.85 C71.58 53.37 71.58 53.08 71.58 53.08 C71.58 53.08 71.58 47.06 70.80 44.18ZM66.03 56.78 H69.72 V60.48 H73.43 V64.18 H69.72 V67.88 H66.03 V64.18 H62.33 V60.48 H66.03 V56.78ZM49.38 47.53 L49.38 58.62 L58.98 53.08Z" />
     </group>
 </vector>

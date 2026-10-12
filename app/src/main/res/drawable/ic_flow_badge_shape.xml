@@ -1,16 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- PlusTube play-badge outline (tight crop), single path so it can be tinted to
-     the active theme at runtime. Pair with ic_flow_badge_glyph for the "F". -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="48dp"
-    android:height="36dp"
+    android:width="20.08dp"
+    android:height="16dp"
     android:viewportWidth="20.08"
-    android:viewportHeight="15.22">
-    <group
-        android:translateX="-1.96"
-        android:translateY="-4.77">
-        <path
-            android:fillColor="#FF0000"
-            android:pathData="M21.58 7.16C21.33 6.22 20.59 5.48 19.65 5.23C17.96 4.77 12 4.77 12 4.77C12 4.77 6.04 4.77 4.35 5.23C3.41 5.48 2.67 6.22 2.42 7.16C1.96 8.85 1.96 12.38 1.96 12.38C1.96 12.38 1.96 15.91 2.42 17.6C2.67 18.54 3.41 19.28 4.35 19.53C6.04 19.99 12 19.99 12 19.99C12 19.99 17.96 19.99 19.65 19.53C20.59 19.28 21.33 18.54 21.58 17.6C22.04 15.91 22.04 12.38 22.04 12.38C22.04 12.38 22.04 8.85 21.58 7.16Z" />
-    </group>
+    android:viewportHeight="16">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M18.72 2.92 C18.50 2.10 17.85 1.45 17.03 1.23 C15.54 0.83 9.56 0.83 9.56 0.83 C9.56 0.83 3.59 0.83 2.09 1.23 C1.27 1.45 0.62 2.10 0.40 2.92 C-0.00 4.41 -0.00 7.52 -0.00 7.52 C-0.00 7.52 -0.00 10.63 0.40 12.12 C0.62 12.94 1.27 13.59 2.09 13.81 C3.59 14.22 9.56 14.22 9.56 14.22 C9.56 14.22 11.10 14.22 12.80 14.17 A4.78 4.78 0 0 1 19.12 7.92 C19.12 7.67 19.12 7.52 19.12 7.52 C19.12 7.52 19.12 4.41 18.72 2.92ZM16.26 9.43 H18.17 V11.35 H20.08 V13.26 H18.17 V15.17 H16.26 V13.26 H14.34 V11.35 H16.26 V9.43Z" />
 </vector>
