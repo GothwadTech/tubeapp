@@ -1,12 +1,57 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path
-        android:fillColor="#0494F4"
-        android:pathData="M21.08 6.69 C20.85 5.83 20.17 5.15 19.31 4.92 C17.75 4.50 11.50 4.50 11.50 4.50 C11.50 4.50 5.25 4.50 3.69 4.92 C2.83 5.15 2.15 5.83 1.92 6.69 C1.50 8.25 1.50 11.50 1.50 11.50 C1.50 11.50 1.50 14.75 1.92 16.31 C2.15 17.17 2.83 17.85 3.69 18.08 C5.25 18.50 11.50 18.50 11.50 18.50 C11.50 18.50 13.11 18.50 14.89 18.45 A5.00 5.00 0 0 1 21.50 11.92 C21.50 11.66 21.50 11.50 21.50 11.50 C21.50 11.50 21.50 8.25 21.08 6.69ZM18.50 13.50 H20.50 V15.50 H22.50 V17.50 H20.50 V19.50 H18.50 V17.50 H16.50 V15.50 H18.50 V13.50Z" />
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M9.50 8.50 L14.69 11.50 L9.50 14.50Z" />
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Platform splash icon for PlusTube. The splash shows its icon at 240dp and only the central
+     160dp circle is guaranteed visible, so the badge is scaled to sit inside that circle (it was
+     full-bleed before and got cropped). Under the badge a PlusTube-blue line fills from left to
+     right while the app starts. -->
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="108dp"
+            android:height="108dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <group
+                android:scaleX="0.56"
+                android:scaleY="0.56"
+                android:translateX="4.96"
+                android:translateY="4.06">
+                <path
+                    android:fillColor="#0494F4"
+                    android:pathData="M21.08 6.69 C20.85 5.83 20.17 5.15 19.31 4.92 C17.75 4.50 11.50 4.50 11.50 4.50 C11.50 4.50 5.25 4.50 3.69 4.92 C2.83 5.15 2.15 5.83 1.92 6.69 C1.50 8.25 1.50 11.50 1.50 11.50 C1.50 11.50 1.50 14.75 1.92 16.31 C2.15 17.17 2.83 17.85 3.69 18.08 C5.25 18.50 11.50 18.50 11.50 18.50 C11.50 18.50 13.11 18.50 14.89 18.45 A5.00 5.00 0 0 1 21.50 11.92 C21.50 11.66 21.50 11.50 21.50 11.50 C21.50 11.50 21.50 8.25 21.08 6.69ZM18.50 13.50 H20.50 V15.50 H22.50 V17.50 H20.50 V19.50 H18.50 V17.50 H16.50 V15.50 H18.50 V13.50Z" />
+                <path
+                    android:fillColor="#FFFFFF"
+                    android:pathData="M9.50 8.50 L14.69 11.50 L9.50 14.50Z" />
+            </group>
+            <!-- Track: the line's full length, faint. -->
+            <path
+                android:fillColor="#00000000"
+                android:strokeColor="#1F0494F4"
+                android:strokeWidth="0.8"
+                android:strokeLineCap="round"
+                android:pathData="M7.2 17.6 L16.8 17.6" />
+            <!-- Fill: animated from empty to full. -->
+            <path
+                android:name="line_fill"
+                android:fillColor="#00000000"
+                android:strokeColor="#0494F4"
+                android:strokeWidth="0.8"
+                android:strokeLineCap="round"
+                android:trimPathEnd="0"
+                android:pathData="M7.2 17.6 L16.8 17.6" />
+        </vector>
+    </aapt:attr>
+    <target android:name="line_fill">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="trimPathEnd"
+                android:duration="900"
+                android:startOffset="150"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/fast_out_slow_in" />
+        </aapt:attr>
+    </target>
+</animated-vector>

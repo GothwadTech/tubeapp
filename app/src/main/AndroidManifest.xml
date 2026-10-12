@@ -392,10 +392,24 @@
         </receiver>
 
         <!-- App Icon Variants (via activity-alias)                          -->
-        <!-- Default: PlusTube Blue (white background, #0494F4 play badge) -->
+        <!-- Default: PlusTube Play (the original icon). Shown on fresh installs. -->
+        <activity-alias
+            android:name=".IconFlowPlay"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_flow_play"
+            android:roundIcon="@mipmap/ic_launcher_flow_play_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- PlusTube Blue (white background, #0494F4 play badge) -->
         <activity-alias
             android:name=".IconFlowRed"
-            android:enabled="true"
+            android:enabled="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -413,20 +427,6 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_flow_light"
             android:roundIcon="@mipmap/ic_launcher_flow_light_round"
-            android:targetActivity=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-
-        <!-- PlusTube Play (white background, #0494F4 video frame + play mark) -->
-        <activity-alias
-            android:name=".IconFlowPlay"
-            android:enabled="false"
-            android:exported="true"
-            android:icon="@mipmap/ic_launcher_flow_play"
-            android:roundIcon="@mipmap/ic_launcher_flow_play_round"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
