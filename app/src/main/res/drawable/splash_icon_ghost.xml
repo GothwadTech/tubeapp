@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
     <path
-        android:fillColor="@android:color/transparent"
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="1.2"
-        android:pathData="M20.01 6.60C19.78 5.73 19.10 5.05 18.24 4.82C16.68 4.40 11.20 4.40 11.20 4.40C11.20 4.40 5.72 4.40 4.16 4.82C3.30 5.05 2.62 5.73 2.39 6.60C1.96 8.15 1.96 11.40 1.96 11.40C1.96 11.40 1.96 14.65 2.39 16.20C2.62 17.07 3.30 17.75 4.16 17.98C5.72 18.40 11.20 18.40 11.20 18.40C11.20 18.40 12.38 18.40 13.80 18.36A4.55 4.55 0 0 1 20.38 13.21C20.44 12.21 20.44 11.40 20.44 11.40C20.44 11.40 20.44 8.15 20.01 6.60ZM17.25 14.10H19.15V16.25H21.30V18.15H19.15V20.30H17.25V18.15H15.10V16.25H17.25Z" />
+        android:fillColor="#16161D"
+        android:pathData="M54,18 C73.88,18 90,34.12 90,54 C90,73.88 73.88,90 54,90 C34.12,90 18,73.88 18,54 C18,34.12 34.12,18 54,18 Z" />
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M8.90 7.90L15.10 11.40L8.90 14.90Z" />
+        android:fillColor="#1AFFFFFF"
+        android:pathData="M73.52 42.58 C73.03 40.73 71.57 39.27 69.72 38.78 C66.36 37.88 52.92 37.88 52.92 37.88 C52.92 37.88 39.49 37.88 36.13 38.78 C34.28 39.27 32.82 40.73 32.33 42.58 C31.43 45.94 31.43 52.92 31.43 52.92 C31.43 52.92 31.43 59.91 32.33 63.27 C32.82 65.12 34.28 66.58 36.13 67.07 C39.49 67.97 52.92 67.97 52.92 67.97 C52.92 67.97 56.39 67.97 60.21 67.87 A10.75 10.75 0 0 1 74.42 53.83 C74.42 53.27 74.42 52.92 74.42 52.92 C74.42 52.92 74.42 45.94 73.52 42.58ZM67.97 57.22 H72.28 V61.52 H76.57 V65.82 H72.28 V70.12 H67.97 V65.82 H63.67 V61.52 H67.97 V57.22Z" />
+    <path
+        android:fillColor="#E6FFFFFF"
+        android:pathData="M48.62 46.47 L59.78 52.92 L48.62 59.38Z" />
 </vector>
