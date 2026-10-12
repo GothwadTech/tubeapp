@@ -11,7 +11,7 @@
         android:fillColor="#FFFFFF"
         android:pathData="M0,0h320v180h-320z" />
     <group
-        android:translateX="22"
+        android:translateX="16"
         android:translateY="42"
         android:scaleX="3.9"
         android:scaleY="3.9">
