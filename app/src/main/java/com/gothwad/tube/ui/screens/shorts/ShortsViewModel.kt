@@ -94,6 +94,8 @@ class ShortsViewModel
 
         val commentsState: StateFlow<List<Comment>> = comments.comments
         val isLoadingComments: StateFlow<Boolean> = comments.isLoading
+        val hasMoreComments: StateFlow<Boolean> = comments.hasMore
+        val isLoadingMoreComments: StateFlow<Boolean> = comments.isLoadingMore
         val commentSortOptions: StateFlow<List<VideoCommentSort>> = comments.sortOptions
         val commentTotalText: StateFlow<String?> = comments.totalText
 
@@ -491,6 +493,8 @@ class ShortsViewModel
         )
 
         fun loadComments(videoId: String) = comments.load(videoId)
+
+        fun loadMoreComments(videoId: String) = comments.loadMore(videoId)
 
         fun selectCommentSort(
             videoId: String,

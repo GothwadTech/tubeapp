@@ -31,8 +31,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.distinctUntilChanged
 import com.gothwad.tube.R
 import com.gothwad.tube.data.model.Video
+import com.gothwad.tube.data.shorts.queue.ShortsQueueSource
 import com.gothwad.tube.ui.screens.home.HomeViewModel
 import com.gothwad.tube.ui.tv.components.TvButton
+import com.gothwad.tube.ui.tv.components.TvShortCard
 import com.gothwad.tube.ui.tv.components.TvMediaRow
 import com.gothwad.tube.ui.tv.components.TvMessageState
 import com.gothwad.tube.ui.tv.components.TvScreenScaffold
@@ -50,6 +52,7 @@ private const val HOME_GRID_COLUMNS = 3
 fun TvHomeScreen(
     viewModel: HomeViewModel,
     onVideoClick: (Video) -> Unit,
+    onShortClick: (ShortsQueueSource) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -57,6 +60,7 @@ fun TvHomeScreen(
     val dimens = LocalTvDimens.current
     val listState = rememberLazyListState()
     val hasContinueWatching = state.continueWatchingVideos.isNotEmpty()
+    val hasShorts = state.shorts.isNotEmpty()
 
     LaunchedEffect(viewModel) {
         viewModel.initialize(context.applicationContext)
@@ -64,8 +68,8 @@ fun TvHomeScreen(
 
     // Same viewport-driven prefetch mobile uses: report the last visible video
     // index so HomeViewModel keeps extending the Flow feed while scrolling.
-    LaunchedEffect(listState, hasContinueWatching) {
-        val fixedItemsBefore = (if (hasContinueWatching) 1 else 0) + 1
+    LaunchedEffect(listState, hasContinueWatching, hasShorts) {
+        val fixedItemsBefore = (if (hasContinueWatching) 1 else 0) + (if (hasShorts) 1 else 0) + 1
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1 }
             .distinctUntilChanged()
             .collect { lastItem ->
@@ -115,6 +119,22 @@ fun TvHomeScreen(
                                     onClick = { onVideoClick(video) },
                                     modifier = Modifier.width(cardWidth),
                                     watchProgress = entry.tvWatchProgress(),
+                                )
+                            }
+                        }
+                    }
+
+                    if (state.shorts.isNotEmpty()) {
+                        item(key = "home-shorts") {
+                            TvMediaRow(
+                                items = state.shorts,
+                                key = Video::id,
+                                title = stringResource(R.string.shorts),
+                            ) { short ->
+                                TvShortCard(
+                                    video = short,
+                                    onClick = { onShortClick(viewModel.shortsShelfSource(state.shorts, short)) },
+                                    modifier = Modifier.width(dimens.videoCardWidth * 0.7f),
                                 )
                             }
                         }

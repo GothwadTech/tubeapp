@@ -1,6 +1,7 @@
 package com.gothwad.tube.ui.tv.navigation
 
 import android.net.Uri
+import com.gothwad.tube.data.shorts.queue.ShortsQueueSource
 import com.gothwad.tube.ui.screens.music.collection.MUSIC_COLLECTION_ARG as COLLECTION_ROUTE_ARG
 
 /** Detail routes layered over the top-level [TvDestination] tabs. */
@@ -17,6 +18,9 @@ object TvRoutes {
     const val MUSIC_ARTIST_ARG = "artistChannelId"
     const val MUSIC_ARTIST = "musicArtist/{$MUSIC_ARTIST_ARG}"
 
+    const val SHORTS_SOURCE_ARG = "shortsSource"
+    const val SHORTS = "shorts?$SHORTS_SOURCE_ARG={$SHORTS_SOURCE_ARG}"
+
     const val SYNC = "sync"
     const val REMOTE_GUIDE = "remoteGuide"
 
@@ -28,4 +32,12 @@ object TvRoutes {
     fun musicCollection(collectionId: String): String = "musicCollection/${Uri.encode(collectionId)}"
 
     fun musicArtist(channelId: String): String = "musicArtist/${Uri.encode(channelId)}"
+
+    /** Feed is the top-level Shorts tab; other sources retain their queue descriptor in the route. */
+    fun shorts(source: ShortsQueueSource): String =
+        if (source == ShortsQueueSource.Feed) {
+            TvDestination.SHORTS.route
+        } else {
+            "${TvDestination.SHORTS.route}?$SHORTS_SOURCE_ARG=${Uri.encode(source.encode())}"
+        }
 }

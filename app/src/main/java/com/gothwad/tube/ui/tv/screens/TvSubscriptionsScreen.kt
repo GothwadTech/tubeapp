@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gothwad.tube.R
 import com.gothwad.tube.data.model.Channel
 import com.gothwad.tube.data.model.Video
+import com.gothwad.tube.data.shorts.queue.ShortsQueueSource
 import com.gothwad.tube.ui.screens.subscriptions.SubscriptionsViewModel
 import com.gothwad.tube.ui.tv.components.TvButton
 import com.gothwad.tube.ui.tv.components.TvChannelCard
@@ -37,6 +38,7 @@ import com.gothwad.tube.ui.tv.components.TvMessageState
 import com.gothwad.tube.ui.tv.components.TvScreenScaffold
 import com.gothwad.tube.ui.tv.components.TvSectionHeader
 import com.gothwad.tube.ui.tv.components.TvShimmerRow
+import com.gothwad.tube.ui.tv.components.TvShortCard
 import com.gothwad.tube.ui.tv.components.TvVideoCard
 import com.gothwad.tube.ui.tv.focus.ProvideTvColumnPivot
 import com.gothwad.tube.ui.tv.focus.tvRowFocus
@@ -55,6 +57,7 @@ fun TvSubscriptionsScreen(
     onVideoClick: (Video) -> Unit,
     modifier: Modifier = Modifier,
     onChannelClick: (String) -> Unit = {},
+    onShortClick: (ShortsQueueSource) -> Unit = {},
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val dimens = LocalTvDimens.current
@@ -161,14 +164,30 @@ fun TvSubscriptionsScreen(
                         }
                     }
 
+                    if (state.isShortsShelfEnabled && state.shorts.isNotEmpty()) {
+                        item(key = "subscription-shorts") {
+                            TvMediaRow(
+                                items = state.shorts,
+                                key = Video::id,
+                                title = stringResource(R.string.shorts),
+                            ) { short ->
+                                TvShortCard(
+                                    video = short,
+                                    onClick = { onShortClick(ShortsQueueSource.Subscriptions(short.id)) },
+                                    modifier = Modifier.width(dimens.videoCardWidth * 0.7f),
+                                )
+                            }
+                        }
+                    }
+
                     when {
-                        state.isLoading && state.recentVideos.isEmpty() -> {
+                        state.isLoading && state.recentVideos.isEmpty() && state.shorts.isEmpty() -> {
                             item(key = "loading") {
                                 TvShimmerRow()
                             }
                         }
 
-                        state.recentVideos.isEmpty() && state.subscribedChannels.isEmpty() -> {
+                        state.recentVideos.isEmpty() && state.shorts.isEmpty() && state.subscribedChannels.isEmpty() -> {
                             item(key = "empty") {
                                 TvMessageState(
                                     title = stringResource(R.string.tv_no_subscriptions),

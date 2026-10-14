@@ -2,6 +2,7 @@ package com.gothwad.tube.ui.tv.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import android.net.Uri
 import androidx.compose.ui.Modifier
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
@@ -10,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.gothwad.tube.data.model.Video
+import com.gothwad.tube.data.shorts.queue.ShortsQueueSource
 import com.gothwad.tube.ui.screens.home.HomeViewModel
 import com.gothwad.tube.ui.screens.music.MusicPlayerViewModel
 import com.gothwad.tube.ui.screens.music.MusicViewModel
@@ -26,6 +28,7 @@ import com.gothwad.tube.ui.tv.screens.TvRemoteGuideScreen
 import com.gothwad.tube.ui.tv.screens.TvSearchScreen
 import com.gothwad.tube.ui.tv.screens.TvSettingsScreen
 import com.gothwad.tube.ui.tv.screens.TvSubscriptionsScreen
+import com.gothwad.tube.ui.tv.screens.TvShortsScreen
 import com.gothwad.tube.ui.tv.screens.TvSyncScreen
 
 /** Top-level TV navigation graph plus detail routes (channel, …). */
@@ -40,10 +43,21 @@ fun TvNavHost(
     searchViewModel: SearchViewModel,
     onPlayVideo: (Video) -> Unit,
     onPlayPlaylist: (List<Video>, String) -> Unit,
+    onBackFromShorts: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val openChannel: (String) -> Unit = { channelRef ->
         navController.navigate(TvRoutes.channel(channelRef))
+    }
+    val openShorts: (ShortsQueueSource) -> Unit = { source ->
+        navController.navigate(TvRoutes.shorts(source)) { launchSingleTop = true }
+    }
+    val playVideo: (Video) -> Unit = { video ->
+        if (video.isShort) {
+            openShorts(ShortsQueueSource.SeededFeed(video.id))
+        } else {
+            onPlayVideo(video)
+        }
     }
 
     NavHost(
@@ -54,7 +68,33 @@ fun TvNavHost(
         composable(TvDestination.HOME.route) {
             TvHomeScreen(
                 viewModel = homeViewModel,
-                onVideoClick = onPlayVideo,
+                onVideoClick = playVideo,
+                onShortClick = openShorts,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+        composable(
+            route = TvRoutes.SHORTS,
+            arguments = listOf(
+                navArgument(TvRoutes.SHORTS_SOURCE_ARG) {
+                    type = NavType.StringType
+                    defaultValue = ShortsQueueSource.Feed.encode()
+                },
+            ),
+        ) { entry ->
+            val rawSource = entry.arguments?.getString(TvRoutes.SHORTS_SOURCE_ARG)
+            val source = decodeShortsSource(rawSource)
+            TvShortsScreen(
+                source = source,
+                onBack = {
+                    if (source != ShortsQueueSource.Feed && navController.previousBackStackEntry != null) {
+                        navController.popBackStack()
+                    } else {
+                        onBackFromShorts()
+                    }
+                },
+                onChannelClick = openChannel,
+                onPlayVideo = playVideo,
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -93,7 +133,8 @@ fun TvNavHost(
         composable(TvDestination.SUBSCRIPTIONS.route) {
             TvSubscriptionsScreen(
                 viewModel = subscriptionsViewModel,
-                onVideoClick = onPlayVideo,
+                onVideoClick = playVideo,
+                onShortClick = openShorts,
                 onChannelClick = openChannel,
                 modifier = Modifier.fillMaxSize(),
             )
@@ -101,7 +142,7 @@ fun TvNavHost(
         composable(TvDestination.SEARCH.route) {
             TvSearchScreen(
                 viewModel = searchViewModel,
-                onVideoClick = onPlayVideo,
+                onVideoClick = playVideo,
                 onChannelClick = openChannel,
                 onOpenPlaylist = { navController.navigate(TvRoutes.playlist(it)) },
                 onPlayTrack = musicPlayerViewModel::loadAndPlayTrack,
@@ -112,7 +153,8 @@ fun TvNavHost(
         }
         composable(TvDestination.LIBRARY.route) {
             TvLibraryScreen(
-                onVideoClick = onPlayVideo,
+                onVideoClick = playVideo,
+                onShortClick = openShorts,
                 onOpenPlaylist = { navController.navigate(TvRoutes.playlist(it)) },
                 onPlayTrack = musicPlayerViewModel::loadAndPlayTrack,
                 onOpenMusicCollection = { navController.navigate(TvRoutes.musicCollection(it)) },
@@ -149,7 +191,8 @@ fun TvNavHost(
                     .orEmpty()
             TvChannelScreen(
                 channelUrl = channelRef,
-                onVideoClick = onPlayVideo,
+                onVideoClick = playVideo,
+                onShortClick = openShorts,
                 onOpenPlaylist = { navController.navigate(TvRoutes.playlist(it)) },
                 modifier = Modifier.fillMaxSize(),
             )
@@ -159,10 +202,19 @@ fun TvNavHost(
             arguments = listOf(navArgument(TvRoutes.PLAYLIST_ARG) { type = NavType.StringType }),
         ) {
             TvPlaylistDetailScreen(
-                onVideoClick = onPlayVideo,
+                onVideoClick = playVideo,
                 onPlayPlaylist = onPlayPlaylist,
                 modifier = Modifier.fillMaxSize(),
             )
         }
     }
+}
+
+private fun decodeShortsSource(raw: String?): ShortsQueueSource {
+    val candidates = listOfNotNull(raw, raw?.let { Uri.decode(it) }).distinct()
+    return candidates
+        .asSequence()
+        .map { ShortsQueueSource.decode(it) }
+        .firstOrNull { it != ShortsQueueSource.Feed }
+        ?: ShortsQueueSource.Feed
 }

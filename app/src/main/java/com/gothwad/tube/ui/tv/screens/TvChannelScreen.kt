@@ -35,6 +35,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import com.gothwad.tube.R
 import com.gothwad.tube.data.model.Video
+import com.gothwad.tube.data.shorts.queue.ShortsQueueSource
 import com.gothwad.tube.innertube.pages.channel.ChannelTabKind
 import com.gothwad.tube.innertube.pages.renderer.FeedItem
 import com.gothwad.tube.ui.screens.channel.ChannelViewModel
@@ -43,6 +44,7 @@ import com.gothwad.tube.ui.tv.components.TvFilterChip
 import com.gothwad.tube.ui.tv.components.TvLoadingState
 import com.gothwad.tube.ui.tv.components.TvMessageState
 import com.gothwad.tube.ui.tv.components.TvPlaylistCard
+import com.gothwad.tube.ui.tv.components.TvShortCard
 import com.gothwad.tube.ui.tv.components.TvVideoCard
 import com.gothwad.tube.ui.tv.focus.tvInitialFocus
 import com.gothwad.tube.ui.tv.focus.tvRowFocus
@@ -55,6 +57,7 @@ private enum class TvChannelTab(
     val labelRes: Int,
 ) {
     VIDEOS(ChannelTabKind.Videos, R.string.tv_channel_videos),
+    SHORTS(ChannelTabKind.Shorts, R.string.tab_shorts),
     LIVE(ChannelTabKind.Live, R.string.tv_filter_live),
     PLAYLISTS(ChannelTabKind.Playlists, R.string.tv_filter_playlists),
     ABOUT(ChannelTabKind.Unknown, R.string.about),
@@ -67,19 +70,28 @@ fun TvChannelScreen(
     onVideoClick: (Video) -> Unit,
     modifier: Modifier = Modifier,
     onOpenPlaylist: (String) -> Unit = {},
+    onShortClick: (ShortsQueueSource) -> Unit = {},
     viewModel: ChannelViewModel = hiltViewModel(),
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val showShortsTab by viewModel.showShortsTab.collectAsStateWithLifecycle()
     val dimens = LocalTvDimens.current
 
     LaunchedEffect(channelUrl) {
         viewModel.loadChannel(channelUrl)
     }
 
+    val visibleTabs =
+        remember(uiState.tabs, showShortsTab) {
+            TvChannelTab.entries.filter { tab ->
+                tab != TvChannelTab.SHORTS || (showShortsTab && uiState.hasTab(ChannelTabKind.Shorts))
+            }
+        }
     val selectedTab =
-        TvChannelTab.entries.firstOrNull { it.kind == uiState.selectedTab }
-            ?: TvChannelTab.VIDEOS
+        visibleTabs.firstOrNull { it.kind == uiState.selectedTab }
+            ?: visibleTabs.firstOrNull { it.kind == ChannelTabKind.Videos }
+            ?: visibleTabs.first()
 
     Column(
         modifier =
@@ -143,7 +155,7 @@ fun TvChannelScreen(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             contentPadding = PaddingValues(horizontal = dimens.overscanHorizontal),
         ) {
-            items(TvChannelTab.entries, key = { it.name }) { tab ->
+            items(visibleTabs, key = { it.name }) { tab ->
                 TvFilterChip(
                     label = stringResource(tab.labelRes),
                     selected = tab == selectedTab,
@@ -220,11 +232,28 @@ fun TvChannelScreen(
                             items(count = items.itemCount) { index ->
                                 when (val item = items[index]) {
                                     is FeedItem.VideoItem -> {
-                                        TvVideoCard(
-                                            video = item.video,
-                                            onClick = { onVideoClick(item.video) },
-                                            modifier = Modifier.fillMaxWidth(),
-                                        )
+                                        if (selectedTab == TvChannelTab.SHORTS) {
+                                            TvShortCard(
+                                                video = item.video.copy(isShort = true),
+                                                onClick = {
+                                                    val sortIndex = tabStates[ChannelTabKind.Shorts]?.selected?.firstOrNull() ?: 0
+                                                    onShortClick(
+                                                        ShortsQueueSource.Channel(
+                                                            channelUrl = channelUrl,
+                                                            startVideoId = item.video.id,
+                                                            sortIndex = sortIndex,
+                                                        ),
+                                                    )
+                                                },
+                                                modifier = Modifier.fillMaxWidth(),
+                                            )
+                                        } else {
+                                            TvVideoCard(
+                                                video = item.video,
+                                                onClick = { onVideoClick(item.video) },
+                                                modifier = Modifier.fillMaxWidth(),
+                                            )
+                                        }
                                     }
 
                                     is FeedItem.PlaylistItem -> {

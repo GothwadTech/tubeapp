@@ -58,6 +58,7 @@ fun TvNavRail(
     onFocusChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     selectedFocusRequester: FocusRequester? = null,
+    destinations: List<TvDestination> = TvDestination.primary,
 ) {
     val dimens = LocalTvDimens.current
     var expanded by remember { mutableStateOf(false) }
@@ -132,7 +133,7 @@ fun TvNavRail(
                 }
             }
             Spacer(Modifier.height(8.dp))
-            TvDestination.primary.forEach { destination ->
+            destinations.forEach { destination ->
                 TvRailItem(
                     destination = destination,
                     selected = destination == selected,

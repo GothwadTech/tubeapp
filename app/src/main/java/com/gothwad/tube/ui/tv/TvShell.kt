@@ -17,11 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.gothwad.tube.data.local.PlayerPreferences
 import com.gothwad.tube.data.model.Video
 import com.gothwad.tube.data.music.model.MusicTrack
 import com.gothwad.tube.ui.screens.home.HomeViewModel
@@ -58,10 +61,17 @@ fun TvShell(
     modifier: Modifier = Modifier,
 ) {
     val dimens = LocalTvDimens.current
+    val context = LocalContext.current
+    val playerPreferences = remember(context) { PlayerPreferences(context.applicationContext) }
+    val showShortsInNavigation by playerPreferences.effectiveShortsNavigationEnabled.collectAsStateWithLifecycle(initialValue = true)
+    val visibleDestinations =
+        remember(showShortsInNavigation) {
+            TvDestination.primary.filter { it != TvDestination.SHORTS || showShortsInNavigation }
+        }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val currentTab = TvDestination.fromRoute(currentRoute)
-    val isOnDetailRoute = currentRoute != null && TvDestination.entries.none { it.route == currentRoute }
+    val isOnDetailRoute = currentRoute != null && !TvDestination.isPrimaryRoute(currentRoute)
     var railHasFocus by remember { mutableStateOf(false) }
     val railFocusRequester = remember { FocusRequester() }
 
@@ -84,6 +94,24 @@ fun TvShell(
             }
         }
         navigateToTab(destination)
+    }
+
+    val backAction =
+        TvBackModel.resolve(
+            isOnDetailRoute = isOnDetailRoute,
+            hasTabHistory = tabHistory.isNotEmpty(),
+            currentTab = currentTab,
+            railHasFocus = railHasFocus,
+        )
+
+    fun handleBackAction() {
+        when (backAction) {
+            TvBackAction.POP_DETAIL -> navController.popBackStack()
+            TvBackAction.POP_TAB -> navigateToTab(tabHistory.removeAt(tabHistory.lastIndex))
+            TvBackAction.GO_HOME -> navigateToTab(TvDestination.HOME)
+            TvBackAction.FOCUS_RAIL -> runCatching { railFocusRequester.requestFocus() }
+            TvBackAction.EXIT -> Unit
+        }
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -113,6 +141,7 @@ fun TvShell(
                     searchViewModel = searchViewModel,
                     onPlayVideo = onPlayVideo,
                     onPlayPlaylist = onPlayPlaylist,
+                    onBackFromShorts = ::handleBackAction,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -129,27 +158,15 @@ fun TvShell(
             onSelected = ::selectTab,
             onFocusChanged = { railHasFocus = it },
             selectedFocusRequester = railFocusRequester,
+            destinations = visibleDestinations,
             modifier =
                 Modifier
                     .align(Alignment.CenterStart)
                     .fillMaxHeight(),
         )
 
-        val backAction =
-            TvBackModel.resolve(
-                isOnDetailRoute = isOnDetailRoute,
-                hasTabHistory = tabHistory.isNotEmpty(),
-                currentTab = currentTab,
-                railHasFocus = railHasFocus,
-            )
-        BackHandler(enabled = backAction != TvBackAction.EXIT) {
-            when (backAction) {
-                TvBackAction.POP_DETAIL -> navController.popBackStack()
-                TvBackAction.POP_TAB -> navigateToTab(tabHistory.removeAt(tabHistory.lastIndex))
-                TvBackAction.GO_HOME -> navigateToTab(TvDestination.HOME)
-                TvBackAction.FOCUS_RAIL -> runCatching { railFocusRequester.requestFocus() }
-                TvBackAction.EXIT -> Unit
-            }
+        BackHandler(enabled = backAction != TvBackAction.EXIT && currentTab != TvDestination.SHORTS) {
+            handleBackAction()
         }
     }
 }

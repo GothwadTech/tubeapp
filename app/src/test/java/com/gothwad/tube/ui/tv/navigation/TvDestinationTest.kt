@@ -8,12 +8,20 @@ class TvDestinationTest {
     fun `primary destinations keep a stable order`() {
         assertThat(TvDestination.primary).containsExactly(
             TvDestination.HOME,
+            TvDestination.SHORTS,
             TvDestination.MUSIC,
             TvDestination.SUBSCRIPTIONS,
             TvDestination.SEARCH,
             TvDestination.LIBRARY,
             TvDestination.SETTINGS,
         ).inOrder()
+    }
+
+    @Test
+    fun `shorts query route still selects the shorts tab`() {
+        assertThat(TvDestination.matchesRoute(TvDestination.SHORTS, "shorts?shortsSource=saved%3Aid"))
+            .isTrue()
+        assertThat(TvDestination.fromRoute("shorts?shortsSource=saved%3Aid")).isEqualTo(TvDestination.SHORTS)
     }
 
     @Test
