@@ -34,11 +34,26 @@ jobs:
             tail -n 100 "$RUNNER_TEMP/pr-gradle.log"
             # Surface the Gradle error in check annotations, not only in the runner log.
             python3 - "$RUNNER_TEMP/pr-gradle.log" <<'PY'
+          import os
           import pathlib
+          import re
           import sys
 
           lines = pathlib.Path(sys.argv[1]).read_text(errors="replace").splitlines()
-          excerpt = "\n".join(lines[-100:])[-12000:]
+          compiler_errors = [
+              line for line in lines
+              if re.search(r"(^e: |\berror:|Unresolved reference|Type mismatch|Compilation error)", line)
+          ]
+          failure_markers = [index for index, line in enumerate(lines) if "* What went wrong:" in line]
+          if failure_markers:
+              failure_index = failure_markers[-1]
+              context = lines[max(0, failure_index - 12):min(len(lines), failure_index + 45)]
+          else:
+              context = lines[-45:]
+          summary = "\n".join(compiler_errors + (["", "Gradle failure context:"] if compiler_errors else []) + context)
+          excerpt = summary[-3500:]
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary_file:
+              summary_file.write("### Gradle failure details\n\n```text\n" + excerpt + "\n```\n")
           escaped = excerpt.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
           print(f"::error title=Gradle build failure::{escaped}")
           PY

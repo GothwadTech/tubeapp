@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,18 +29,23 @@ import com.gothwad.tube.R
 import com.gothwad.tube.data.local.LikedVideoInfo
 import com.gothwad.tube.data.local.LikedVideosRepository
 import com.gothwad.tube.data.local.PlaylistRepository
+import com.gothwad.tube.data.local.PlayerPreferences
 import com.gothwad.tube.data.local.ViewHistory
 import com.gothwad.tube.data.model.Playlist
 import com.gothwad.tube.data.model.PlaylistInfo
 import com.gothwad.tube.data.model.Video
 import com.gothwad.tube.data.music.model.MusicTrack
+import com.gothwad.tube.data.shorts.queue.ShortsQueueSource
+import com.gothwad.tube.ui.screens.library.SavedShortsViewModel
 import com.gothwad.tube.ui.tv.components.TvFilterChip
+import com.gothwad.tube.ui.tv.components.TvMediaGrid
 import com.gothwad.tube.ui.tv.components.TvMediaRow
 import com.gothwad.tube.ui.tv.components.TvMessageState
 import com.gothwad.tube.ui.tv.components.TvMusicCard
 import com.gothwad.tube.ui.tv.components.TvMusicCollectionCard
 import com.gothwad.tube.ui.tv.components.TvPlaylistCard
 import com.gothwad.tube.ui.tv.components.TvScreenScaffold
+import com.gothwad.tube.ui.tv.components.TvShortCard
 import com.gothwad.tube.ui.tv.components.TvVideoCard
 import com.gothwad.tube.ui.tv.focus.ProvideTvColumnPivot
 import com.gothwad.tube.ui.tv.focus.tvRowFocus
@@ -55,6 +61,7 @@ private enum class TvLibrarySection(
 ) {
     HISTORY(R.string.tv_library_history),
     LIKES(R.string.tv_library_likes),
+    SAVED_SHORTS(R.string.library_saved_shorts_label),
     WATCH_LATER(R.string.tv_library_watch_later),
     PLAYLISTS(R.string.tv_library_playlists),
 }
@@ -71,11 +78,16 @@ fun TvLibraryScreen(
     onOpenPlaylist: (String) -> Unit = {},
     onPlayTrack: (MusicTrack, List<MusicTrack>, String) -> Unit = { _, _, _ -> },
     onOpenMusicCollection: (String) -> Unit = {},
+    onShortClick: (ShortsQueueSource) -> Unit = {},
 ) {
     val context = LocalContext.current
     val historyRepository = remember { ViewHistory.getInstance(context.applicationContext) }
     val likedRepository = remember { LikedVideosRepository.getInstance(context.applicationContext) }
     val playlistRepository = remember { PlaylistRepository(context.applicationContext) }
+    val playerPreferences = remember { PlayerPreferences(context.applicationContext) }
+    val shortsContentEnabled by playerPreferences.shortsContentEnabled.collectAsStateWithLifecycle(initialValue = true)
+    val savedShortsViewModel: SavedShortsViewModel = hiltViewModel()
+    val savedShorts by savedShortsViewModel.savedShorts.collectAsStateWithLifecycle(initialValue = emptyList())
     val history by historyRepository
         .getAllHistory()
         .collectAsStateWithLifecycle(initialValue = emptyList())
@@ -92,6 +104,10 @@ fun TvLibraryScreen(
         .getMusicPlaylistsFlow()
         .collectAsStateWithLifecycle(initialValue = emptyList())
     var selectedSection by rememberSaveable { mutableStateOf(TvLibrarySection.HISTORY) }
+    val visibleSections = remember(shortsContentEnabled) {
+        TvLibrarySection.entries.filter { it != TvLibrarySection.SAVED_SHORTS || shortsContentEnabled }
+    }
+    val activeSection = selectedSection.takeIf { it in visibleSections } ?: TvLibrarySection.HISTORY
     val dimens = LocalTvDimens.current
 
     TvScreenScaffold(
@@ -110,16 +126,16 @@ fun TvLibraryScreen(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 contentPadding = PaddingValues(horizontal = dimens.overscanHorizontal),
             ) {
-                items(TvLibrarySection.entries, key = TvLibrarySection::name) { section ->
+                items(visibleSections, key = TvLibrarySection::name) { section ->
                     TvFilterChip(
                         label = stringResource(section.titleRes),
-                        selected = selectedSection == section,
+                        selected = activeSection == section,
                         onClick = { selectedSection = section },
                     )
                 }
             }
 
-            when (selectedSection) {
+            when (activeSection) {
                 TvLibrarySection.HISTORY -> {
                     TvLibraryMixedContent(
                         musicTracks = history.filter { it.isMusic }.map { it.toTvMusicTrack() },
@@ -144,6 +160,26 @@ fun TvLibraryScreen(
                         onVideoClick = onVideoClick,
                         onPlayTrack = onPlayTrack,
                     )
+                }
+
+                TvLibrarySection.SAVED_SHORTS -> {
+                    if (savedShorts.isEmpty()) {
+                        TvMessageState(
+                            title = stringResource(R.string.empty_saved_shorts),
+                            modifier = Modifier.fillMaxSize().padding(horizontal = dimens.overscanHorizontal),
+                        )
+                    } else {
+                        TvMediaGrid(
+                            items = savedShorts,
+                            key = Video::id,
+                            modifier = Modifier.fillMaxSize(),
+                        ) { short ->
+                            TvShortCard(
+                                video = short.copy(isShort = true),
+                                onClick = { onShortClick(ShortsQueueSource.Saved(short.id)) },
+                            )
+                        }
+                    }
                 }
 
                 TvLibrarySection.WATCH_LATER -> {

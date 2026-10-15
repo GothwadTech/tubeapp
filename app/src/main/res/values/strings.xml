@@ -2296,6 +2296,10 @@
     <string name="next_frame">Next frame</string>
     <string name="previous_video">Previous Video</string>
     <string name="next_video">Next Video</string>
+    <string name="tv_shorts_position_template">%1$d of %2$d</string>
+    <string name="tv_shorts_remote_hint">UP: next Short · DOWN: previous · LEFT/RIGHT: controls · SELECT: activate (focus Play/Pause to toggle)</string>
+    <string name="tv_shorts_load_more_comments">Load more comments</string>
+    <string name="tv_shorts_open_channel">Open channel</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="resize_to">Resize: %1$s</string>
     <string name="resize_fit">Fit</string>
