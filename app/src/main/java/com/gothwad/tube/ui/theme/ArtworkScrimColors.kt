@@ -27,7 +27,7 @@ val ArtworkScrimIndex = ArtworkScrim.copy(alpha = 0.6f)
 /** Translucent affordance resting directly on artwork. */
 val ArtworkScrimAffordance = ArtworkScrimContent.copy(alpha = 0.1f)
 
-val ArtworkLiveBadge = Color(0xFFCC0000)
+val ArtworkLiveBadge = PlusTubeBrandBlue
 
 /** Stops for the bottom-up gradient that keeps a card's caption legible over its artwork. */
 fun artworkScrim(alpha: Float): Color = ArtworkScrim.copy(alpha = alpha)
