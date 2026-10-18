@@ -181,8 +181,8 @@ fun FlowTheme(
             textSecondary = colorScheme.onSurfaceVariant,
             border = colorScheme.outlineVariant,
             success = colorScheme.tertiary,
-            // Brand mark, not a scheme role: the Shorts glyph is red in every theme.
-            shortsAccent = YouTubeRed,
+            // Brand mark, not a scheme role: the Shorts glyph uses PlusTube blue in every theme.
+            shortsAccent = PlusTubeBrandBlue,
         )
 
     CompositionLocalProvider(LocalExtendedColors provides extendedColors) {

@@ -152,7 +152,7 @@ private fun ElapsedText(elapsedSeconds: Long) {
 }
 
 /**
- * The pulsing red dot beside the LIVE badge.
+ * The pulsing PlusTube-blue dot beside the LIVE badge.
  *
  * The transition only exists while the layer is on screen, so leaving it cancels the animation
  * instead of leaving it driving the frame clock behind a hidden overlay. The alpha is read in

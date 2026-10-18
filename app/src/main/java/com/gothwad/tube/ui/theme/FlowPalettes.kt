@@ -19,8 +19,8 @@ object FlowPalettes {
                     id = "default",
                     light =
                         PaletteSeed(
-                            primary = Color(0xFFFF0000),
-                            onPrimary = Color(0xFFFFFFFF),
+                            primary = PlusTubeBrandBlue,
+                            onPrimary = Color(0xFF00131F),
                             secondary = Color(0xFF606060),
                             background = Color(0xFFFFFFFF),
                             surface = Color(0xFFF3F3F3),
@@ -31,8 +31,8 @@ object FlowPalettes {
                         ),
                     dark =
                         PaletteSeed(
-                            primary = Color(0xFFFF0000),
-                            onPrimary = Color(0xFFFFFFFF),
+                            primary = PlusTubeBrandBlue,
+                            onPrimary = Color(0xFF00131F),
                             secondary = Color(0xFFAAAAAA),
                             background = Color(0xFF0F0F0F),
                             surface = Color(0xFF1D1D1D),

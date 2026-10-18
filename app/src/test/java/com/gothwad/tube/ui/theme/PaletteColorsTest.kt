@@ -22,6 +22,15 @@ class PaletteColorsTest {
     }
 
     @Test
+    fun `PlusTube default uses its blue accent with a readable foreground`() {
+        ThemeVariant.entries.forEach { variant ->
+            val colors = FlowPalettes.default.colorsFor(variant)
+            assertThat(colors.primary).isEqualTo(PlusTubeBrandBlue)
+            assertThat(contrast(colors.onPrimary, colors.primary)).isAtLeast(4.5f)
+        }
+    }
+
+    @Test
     fun `surface steps follow Flow Desktop's expansion`() {
         val light = FlowPalettes.default.colorsFor(ThemeVariant.LIGHT)
         assertThat(light.surfaceContainer).isEqualTo(light.surface)

@@ -37,7 +37,7 @@ val PlayerScrimContentSecondary = PlayerScrimContent.copy(alpha = 0.7f)
 
 val PlayerScrimContentDisabled = PlayerScrimContent.copy(alpha = 0.3f)
 
-val PlayerLiveIndicator = Color.Red
+val PlayerLiveIndicator = PlusTubeBrandBlue
 
 /** The rewatch curve behind the seek bar, and the brighter fill over its most-replayed stretch. */
 val PlayerHeatmapCurve = PlayerScrimContent.copy(alpha = 0.22f)
