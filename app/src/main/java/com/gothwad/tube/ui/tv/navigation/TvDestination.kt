@@ -27,7 +27,8 @@ enum class TvDestination(
     SETTINGS("settings", R.string.settings, Icons.Outlined.Settings);
 
     companion object {
-        val primary: List<TvDestination> = entries.toList()
+        // Temporarily hide the unfinished TV Shorts tab. Keep its route for existing entry points.
+        val primary: List<TvDestination> = entries.filterNot { it == SHORTS }
 
         /** Routes may add query arguments (Shorts carries its queue source). */
         fun matchesRoute(

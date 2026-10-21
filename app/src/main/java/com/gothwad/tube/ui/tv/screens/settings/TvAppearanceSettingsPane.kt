@@ -61,9 +61,9 @@ fun TvAppearanceSettingsPane(
             val (mode, labelRes) = TV_THEME_MODES[index]
             TvSelectionRow(
                 label = stringResource(labelRes),
-                selected = themeMode == mode,
+                selected = isTvThemeSelected(mode, themeMode, themeVariant),
                 onClick = {
-                    scope.launch { localDataManager.setThemeMode(mode) }
+                    scope.launch { localDataManager.setThemeMode(mode, tvThemePresetVariant(mode)) }
                 },
             )
         }

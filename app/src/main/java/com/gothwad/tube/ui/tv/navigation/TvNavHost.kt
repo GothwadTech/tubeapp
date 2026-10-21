@@ -69,7 +69,6 @@ fun TvNavHost(
             TvHomeScreen(
                 viewModel = homeViewModel,
                 onVideoClick = playVideo,
-                onShortClick = openShorts,
                 modifier = Modifier.fillMaxSize(),
             )
         }
