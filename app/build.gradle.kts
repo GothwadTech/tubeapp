@@ -103,6 +103,7 @@ android {
             storeFile = rootDir.resolve("release.keystore")
             storePassword = (project.findProperty("storePassword") as? String)
                 ?: localProperties.getProperty("storePassword")
+                ?: System.getenv("KEYSTORE_PASSWORD")
                 ?: System.getenv("STORE_PASSWORD")
                 ?: ""
             keyAlias = (project.findProperty("keyAlias") as? String)
