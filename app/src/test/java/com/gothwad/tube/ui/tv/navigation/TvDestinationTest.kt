@@ -8,13 +8,17 @@ class TvDestinationTest {
     fun `primary destinations keep a stable order`() {
         assertThat(TvDestination.primary).containsExactly(
             TvDestination.HOME,
-            TvDestination.SHORTS,
             TvDestination.MUSIC,
             TvDestination.SUBSCRIPTIONS,
             TvDestination.SEARCH,
             TvDestination.LIBRARY,
             TvDestination.SETTINGS,
         ).inOrder()
+    }
+
+    @Test
+    fun `unfinished shorts tab stays hidden from primary navigation`() {
+        assertThat(TvDestination.primary).doesNotContain(TvDestination.SHORTS)
     }
 
     @Test

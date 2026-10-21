@@ -123,9 +123,13 @@ class LocalDataManager
                 parseThemeMode(prefs[THEME_MODE], ThemeMode.SYSTEM)
             }
 
-        suspend fun setThemeMode(mode: ThemeMode) {
+        suspend fun setThemeMode(
+            mode: ThemeMode,
+            variant: ThemeVariant? = null,
+        ) {
             context.dataStore.edit { prefs ->
                 prefs[THEME_MODE] = mode.canonicalFamily().name
+                if (variant != null) prefs[THEME_VARIANT] = variant.name
             }
         }
 
